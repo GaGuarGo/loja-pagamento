@@ -22,8 +22,12 @@ class MyApp extends StatelessWidget {
       title: 'Loja do Gabriel',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primaryColor: const Color.fromARGB(255, 4, 125, 141),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 4, 125, 141),
+        appBarTheme: const AppBarTheme(
+          elevation: 0.0,
+          backgroundColor: Color.fromARGB(255, 4, 125, 141),
+        ),
       ),
       home: BaseScreen(),
     );
