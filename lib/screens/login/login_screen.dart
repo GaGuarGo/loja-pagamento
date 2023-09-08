@@ -1,5 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/helpers/validators.dart';
+import 'package:loja_virtual/models/user.dart';
+import 'package:loja_virtual/models/user_manager.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -8,10 +13,12 @@ class LoginScreen extends StatelessWidget {
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text("Entrar"),
         centerTitle: true,
@@ -67,7 +74,22 @@ class LoginScreen extends StatelessWidget {
                   height: 44,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
+                      if (_formKey.currentState!.validate()) {
+                        context.read<UserManager>().signIn(
+                            user: UserModel(
+                                email: emailController.text,
+                                password: passwordController.text),
+                            onFail: (e) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text("Falha ao Entrar: $e"),
+                                backgroundColor: Colors.red,
+                              ));
+                            },
+                            onSuccess: () {
+                              //TODO: FECHA TELA DE LOGIN
+                            });
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
