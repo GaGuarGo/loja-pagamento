@@ -29,81 +29,96 @@ class LoginScreen extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           margin: const EdgeInsets.symmetric(horizontal: 16),
           child: Form(
-            key: _formKey,
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              shrinkWrap: true,
-              children: [
-                TextFormField(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  autocorrect: false,
-                  decoration: const InputDecoration(hintText: "E-mail"),
-                  validator: (email) {
-                    if (!emailValid(email!)) {
-                      return "E-mail Inválido";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: passwordController,
-                  autocorrect: false,
-                  decoration: const InputDecoration(hintText: "Senha"),
-                  obscureText: true,
-                  validator: (password) {
-                    if (password!.isEmpty || password.length < 6) {
-                      return "Senha Inválida!";
-                    }
-                    return null;
-                  },
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                    ),
-                    child: const Text("Esqueci minha Senha"),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  height: 44,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        context.read<UserManager>().signIn(
-                            user: UserModel(
-                                email: emailController.text,
-                                password: passwordController.text),
-                            onFail: (e) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text("Falha ao Entrar: $e"),
-                                backgroundColor: Colors.red,
-                              ));
-                            },
-                            onSuccess: () {
-                              //TODO: FECHA TELA DE LOGIN
-                            });
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+              key: _formKey,
+              child: Consumer<UserManager>(
+                builder: (_, userManager, __) {
+                  return ListView(
+                    padding: const EdgeInsets.all(16),
+                    shrinkWrap: true,
+                    children: [
+                      TextFormField(
+                        enabled: !userManager.loading,
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        autocorrect: false,
+                        decoration: const InputDecoration(hintText: "E-mail"),
+                        validator: (email) {
+                          if (!emailValid(email!)) {
+                            return "E-mail Inválido";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: passwordController,
+                        enabled: !userManager.loading,
+                        autocorrect: false,
+                        decoration: const InputDecoration(hintText: "Senha"),
+                        obscureText: true,
+                        validator: (password) {
+                          if (password!.isEmpty || password.length < 6) {
+                            return "Senha Inválida!";
+                          }
+                          return null;
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                          ),
+                          child: const Text("Esqueci minha Senha"),
                         ),
-                        textStyle:
-                            const TextStyle(color: Colors.white, fontSize: 18),
-                        backgroundColor: Theme.of(context).primaryColor),
-                    child: const Text("Entrar"),
-                  ),
-                ),
-              ],
-            ),
-          ),
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        height: 44,
+                        child: ElevatedButton(
+                          onPressed: userManager.loading
+                              ? null
+                              : () {
+                                  if (_formKey.currentState!.validate()) {
+                                    userManager.signIn(
+                                        user: UserModel(
+                                            email: emailController.text,
+                                            password: passwordController.text),
+                                        onFail: (e) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content:
+                                                Text("Falha ao Entrar: $e"),
+                                            backgroundColor: Colors.red,
+                                          ));
+                                        },
+                                        onSuccess: () {
+                                          //TODO: FECHA TELA DE LOGIN
+                                        });
+                                  }
+                                },
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              disabledBackgroundColor:
+                                  Theme.of(context).primaryColor.withAlpha(100),
+                              textStyle: const TextStyle(
+                                  color: Colors.white, fontSize: 18),
+                              backgroundColor: Theme.of(context).primaryColor),
+                          child: userManager.loading
+                              ? const CircularProgressIndicator(
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white),
+                                )
+                              : const Text("Entrar"),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              )),
         ),
       ),
     );

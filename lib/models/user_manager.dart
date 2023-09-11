@@ -1,18 +1,23 @@
 // ignore_for_file: avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+
 import 'package:loja_virtual/helpers/firebase_errors.dart';
 
 import 'user.dart';
 
-class UserManager {
+class UserManager extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  bool loading = false;
 
   Future<void> signIn(
       {required UserModel user,
       required Function onFail,
       required Function onSuccess}) async {
+    setLoading(true);
+
     try {
       final result = await _auth.signInWithEmailAndPassword(
           email: user.email!, password: user.password!);
@@ -22,5 +27,12 @@ class UserManager {
       //OS NOMES DOS ERROS MUDARAM TEM QUE COLOCAR OS NOVOS
       onFail(getErrorString(e.code));
     }
+
+    setLoading(false);
+  }
+
+  void setLoading(bool value) {
+    loading = value;
+    notifyListeners();
   }
 }

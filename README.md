@@ -1,16 +1,29 @@
 # loja_virtual
 
-A new Flutter project.
+Projeto de uma Loja virtual feita totalmente em Flutter que é inteiramente customizável.
 
-## Getting Started
+## Recursos do Projeto:
 
-This project is a starting point for a Flutter application.
+Pagamento por Cartão de Crédito
 
-A few resources to get you started if this is your first Flutter project:
+Sistema de Login/Cadastro com Facebook ou E-mail e Senha
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Pesquisa de Produtos
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Seleção de Tamanho (P, M, G, GG) com preços diferenciados
+
+Controle de Estoque por Tamanho
+
+Carrinho de Compras
+
+Cálculo de Frete por Distância
+
+Controle do Gerente da Loja Integrado
+
+Tela Inicial Facilmente Customizável
+
+Notificações por Push
+
+Processo de Adição/Remoção de Produtos Simplificado
+
+Especificação dos Horários de Funcionamento, Contato e Endereço da Loja
