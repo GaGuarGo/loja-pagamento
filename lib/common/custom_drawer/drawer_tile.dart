@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:loja_virtual/models/page_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +16,7 @@ class DrawerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int curPage = context.watch<PageManager>().page;
+    final Color primaryColor = Theme.of(context).primaryColor;
 
     return InkWell(
       onTap: () {
@@ -30,13 +30,13 @@ class DrawerTile extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               child: Icon(iconData,
                   size: 32,
-                  color: curPage == page ? Colors.blue : Colors.grey.shade700),
+                  color: curPage == page ? primaryColor : Colors.grey.shade700),
             ),
             Text(
               title,
               style: TextStyle(
                   fontSize: 16,
-                  color: curPage == page ? Colors.blue : Colors.grey.shade700),
+                  color: curPage == page ? primaryColor : Colors.grey.shade700),
             )
           ],
         ),
