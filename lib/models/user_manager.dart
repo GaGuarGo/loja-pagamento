@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:loja_virtual/helpers/firebase_errors.dart';
 
@@ -40,6 +41,25 @@ class UserManager extends ChangeNotifier {
     loading = false;
   }
 
+  Future<void> signUp(
+      {required UserModel user,
+      required Function onFail,
+      required Function onSuccess}) async {
+    loading = true;
+
+    try {
+      final result = await _auth.createUserWithEmailAndPassword(
+          email: user.email!, password: user.password!);
+
+      this.user = result.user;
+
+      onSuccess();
+    } on FirebaseAuthException catch (e) {
+      onFail(getErrorString(e.code));
+    }
+    loading = false;
+  }
+
   set loading(bool value) {
     _loading = value;
     notifyListeners();
@@ -50,6 +70,7 @@ class UserManager extends ChangeNotifier {
 
     if (currentUser != null) {
       user = currentUser;
+      // print(user!.uid);
     }
     notifyListeners();
   }
