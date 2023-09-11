@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/user_manager.dart';
 import 'package:loja_virtual/screens/base/base_screen.dart';
+import 'package:loja_virtual/screens/login/login_screen.dart';
+import 'package:loja_virtual/screens/signup/signup_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
+      lazy: false,
       create: (BuildContext context) => UserManager(),
       child: MaterialApp(
         title: 'Loja do Gabriel',
@@ -33,7 +36,19 @@ class MyApp extends StatelessWidget {
             backgroundColor: Color.fromARGB(255, 4, 125, 141),
           ),
         ),
-        home: BaseScreen(),
+        initialRoute: '/base',
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/login':
+              return MaterialPageRoute(builder: (context) => LoginScreen());
+            case '/signup':
+              return MaterialPageRoute(builder: (context) => SignUpScreen());
+
+            case '/case':
+            default:
+              return MaterialPageRoute(builder: (context) => BaseScreen());
+          }
+        },
       ),
     );
   }
