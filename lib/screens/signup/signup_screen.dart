@@ -122,8 +122,8 @@ class SignUpScreen extends StatelessWidget {
                               ));
                             },
                             onSuccess: () {
-                              // Navigator.pop(context);
-                              print("Sucesso!");
+                              Navigator.pop(context);
+                              // print("Sucesso!");
                             },
                           );
                     }

@@ -104,7 +104,7 @@ class LoginScreen extends StatelessWidget {
                                           ));
                                         },
                                         onSuccess: () {
-                                          //TODO: FECHA TELA DE LOGIN
+                                          Navigator.pop(context);
                                         });
                                   }
                                 },
