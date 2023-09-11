@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print, unused_local_variable
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:loja_virtual/helpers/firebase_errors.dart';
 
@@ -14,8 +14,9 @@ class UserManager extends ChangeNotifier {
   }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
 
-  User? user;
+  UserModel? user;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -30,7 +31,7 @@ class UserManager extends ChangeNotifier {
       final result = await _auth.signInWithEmailAndPassword(
           email: user.email!, password: user.password!);
 
-      this.user = result.user;
+      _loadCurrentUser(firebaseUser: result.user);
 
       onSuccess();
     } on FirebaseAuthException catch (e) {
@@ -51,7 +52,10 @@ class UserManager extends ChangeNotifier {
       final result = await _auth.createUserWithEmailAndPassword(
           email: user.email!, password: user.password!);
 
-      this.user = result.user;
+      user.id = result.user!.uid;
+      this.user = user;
+
+      await user.saveData();
 
       onSuccess();
     } on FirebaseAuthException catch (e) {
@@ -65,13 +69,14 @@ class UserManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _loadCurrentUser() async {
-    final currentUser = _auth.currentUser;
+  void _loadCurrentUser({User? firebaseUser}) async {
+    final currentUser = firebaseUser ?? _auth.currentUser;
 
     if (currentUser != null) {
-      user = currentUser;
-      // print(user!.uid);
+      final userDoc =
+          await _firestore.collection('users').doc(currentUser.uid).get();
+      user = UserModel.fromDocument(userDoc);
+      notifyListeners();
     }
-    notifyListeners();
   }
 }
