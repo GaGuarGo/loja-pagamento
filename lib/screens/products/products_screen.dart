@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loja_virtual/common/custom_drawer/custom_drawer.dart';
 import 'package:loja_virtual/models/product_manager.dart';
 import 'package:loja_virtual/screens/products/components/product_list_tile.dart';
+import 'package:loja_virtual/screens/products/components/search_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ProductsScreen extends StatelessWidget {
@@ -14,6 +15,13 @@ class ProductsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Produtos"),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                showDialog(context: context, builder: (_) => SearchDialog());
+              },
+              icon: const Icon(Icons.search)),
+        ],
       ),
       body: Consumer<ProductManager>(builder: (_, productMangaer, __) {
         return ListView.builder(
