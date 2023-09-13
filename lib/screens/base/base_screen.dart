@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/common/custom_drawer/custom_drawer.dart';
 import 'package:loja_virtual/models/page_manager.dart';
+import 'package:loja_virtual/screens/products/products_screen.dart';
 import 'package:provider/provider.dart';
 
 // ignore: use_key_in_widget_constructors
@@ -21,9 +22,7 @@ class BaseScreen extends StatelessWidget {
               title: const Text("Home"),
             ),
           ),
-          Container(
-            color: Colors.red,
-          ),
+          ProductsScreen(),
           Container(
             color: Colors.yellow,
           ),
