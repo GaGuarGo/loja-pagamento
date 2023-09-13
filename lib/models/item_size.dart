@@ -1,13 +1,13 @@
 class ItemSize {
-  ItemSize.fromMap(Map<String, dynamic> document) {
-    name = document['name'] as String;
-    price = document['price'] as num;
-    stock = document['stock'] as int;
+  ItemSize.fromMap(Map<String, dynamic> map) {
+    name = map['name'] as String;
+    price = map['price'] as num;
+    stock = map['stock'] as num;
   }
 
   String? name;
   num? price;
-  int? stock;
+  num? stock;
 
   bool get hasStock => stock! > 0;
 

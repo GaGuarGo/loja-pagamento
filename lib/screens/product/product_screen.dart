@@ -36,9 +36,10 @@ class ProductScreen extends StatelessWidget {
                 aspectRatio: 1,
                 enableInfiniteScroll: true,
                 autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 4),
-                autoPlayAnimationDuration: const Duration(seconds: 2),
-                autoPlayCurve: Curves.easeInCirc),
+                autoPlayInterval: const Duration(seconds: 3),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                disableCenter: false),
           ),
           Padding(
             padding: const EdgeInsets.all(16),
