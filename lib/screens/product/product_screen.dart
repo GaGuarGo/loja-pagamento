@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/product.dart';
+import 'components/size_widget.dart';
 
 class ProductScreen extends StatelessWidget {
   final Product product;
@@ -83,6 +84,24 @@ class ProductScreen extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                   ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 8, top: 16),
+                  child: Text(
+                    'Tamanhos:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  runAlignment: WrapAlignment.spaceEvenly,
+                  children: product.sizes!.map((s) {
+                    return SizeWidget(size: s);
+                  }).toList(),
                 ),
               ],
             ),
