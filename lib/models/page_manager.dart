@@ -10,7 +10,7 @@ class PageManager {
 
   void setPage(int page) {
     if (this.page == page) return;
-    this.page == page;
+    this.page = page;
     _pageController.animateToPage(page,
         duration: const Duration(milliseconds: 500), curve: Curves.linear);
   }
