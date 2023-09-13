@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:loja_virtual/models/user_manager.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/product.dart';
@@ -48,7 +49,7 @@ class ProductScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
                     product.name!,
@@ -106,6 +107,38 @@ class ProductScreen extends StatelessWidget {
                       return SizeWidget(size: s);
                     }).toList(),
                   ),
+                  const SizedBox(height: 20),
+                  if (product.hasStock)
+                    Consumer2<UserManager, Product>(
+                      builder: (_, userManager, product, __) {
+                        return SizedBox(
+                          height: 44,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: primaryColor,
+                                textStyle:
+                                    const TextStyle(color: Colors.white)),
+                            onPressed: product.selectedSize.name != ''
+                                ? () {
+                                    if (userManager.isLoggedIn) {
+                                      // TODO: ADICIONAR AO CARRINHO
+                                    } else {
+                                      Navigator.of(context).pushNamed('/login');
+                                    }
+                                  }
+                                : null,
+                            child: Text(
+                              userManager.isLoggedIn
+                                  ? "Adicionar ao Carrinho"
+                                  : "Entre para Comprar",
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                 ],
               ),
             ),

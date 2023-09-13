@@ -11,17 +11,16 @@ class SizeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = context.watch<Product>();
 
-    //Problema no Select
+    //TODO: Problema no Select
 
-    //final selected = size == product.selectedSize;
+    final selected = size == product.selectedSize;
 
     Color color;
     if (!size.hasStock) {
       color = Colors.red.withAlpha(50);
-    } //else if (selected) {
-    //color = Theme.of(context).primaryColor;
-    //}
-    else {
+    } else if (selected) {
+      color = Theme.of(context).primaryColor;
+    } else {
       color = Colors.grey;
     }
 

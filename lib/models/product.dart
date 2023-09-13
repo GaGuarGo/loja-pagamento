@@ -19,10 +19,21 @@ class Product extends ChangeNotifier {
   List<String>? images;
   List<ItemSize>? sizes;
 
-  late ItemSize _selectedSize;
+  ItemSize _selectedSize =
+      ItemSize.fromMap({'name': '', 'price': 0, 'stock': 0});
   ItemSize get selectedSize => _selectedSize;
   set selectedSize(ItemSize value) {
     _selectedSize = value;
     notifyListeners();
   }
+
+  int get totalStock {
+    int stock = 0;
+    for (final size in sizes!) {
+      stock += size.stock!;
+    }
+    return stock;
+  }
+
+  bool get hasStock => totalStock > 0;
 }
