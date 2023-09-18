@@ -50,20 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: '',
-    appId: '',
-    messagingSenderId: '',
-    projectId: '',
-    storageBucket: '',
+    apiKey: 'AIzaSyCuWApIQHCyQWYqhEoJxHy-yFCfkZpUX2o',
+    appId: '1:273362818802:android:f96588f8742b11f64e226b',
+    messagingSenderId: '273362818802',
+    projectId: 'loja-virtual-24396',
+    storageBucket: 'loja-virtual-24396.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: '',
-    appId: '',
-    messagingSenderId: '',
-    projectId: '',
-    storageBucket: '',
-    iosClientId: '',
-    iosBundleId: '',
+    apiKey: 'AIzaSyB1owaz9NuYbrUIB5HTnJ3TkjESn3Sfnk4',
+    appId: '1:273362818802:ios:01b6e86cf28bbb134e226b',
+    messagingSenderId: '273362818802',
+    projectId: 'loja-virtual-24396',
+    storageBucket: 'loja-virtual-24396.appspot.com',
+    iosClientId:
+        '273362818802-8dn1pimdln3en1uljgd1tsfqc25lqbm9.apps.googleusercontent.com',
+    iosBundleId: 'com.guarnieri.lojaVirtual',
   );
 }
