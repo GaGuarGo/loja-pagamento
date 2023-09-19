@@ -9,6 +9,8 @@ class CartManager extends ChangeNotifier {
 
   UserModel? user;
 
+  num productsPrice = 0.0;
+
   updateUser(UserManager userManager) {
     user = userManager.user;
     items.clear();
@@ -36,6 +38,7 @@ class CartManager extends ChangeNotifier {
       user!.cartReference
           .add(cartProduct.toCartItemMap())
           .then((doc) => cartProduct.id = doc.id);
+      _onItemUpdated();
     }
     notifyListeners();
   }
@@ -48,16 +51,37 @@ class CartManager extends ChangeNotifier {
   }
 
   void _onItemUpdated() {
-    for (final cartProduct in items) {
+    productsPrice = 0.0;
+
+    for (int i = 0; i < items.length; i++) {
+      final cartProduct = items[i];
+
       if (cartProduct.quantity == 0) {
         removeFromCart(cartProduct);
+        i--;
+        continue;
       }
+
+      productsPrice += cartProduct.totalPrice;
 
       _updateCartProduct(cartProduct);
     }
+
+    print(productsPrice);
   }
 
   void _updateCartProduct(CartProduct cartProduct) {
-    user!.cartReference.doc(cartProduct.id).update(cartProduct.toCartItemMap());
+    if (cartProduct.id != null) {
+      user!.cartReference
+          .doc(cartProduct.id)
+          .update(cartProduct.toCartItemMap());
+    }
+  }
+
+  bool get isCartValid {
+    for (final cp in items) {
+      if (!cp.hasStock) return false;
+    }
+    return true;
   }
 }
