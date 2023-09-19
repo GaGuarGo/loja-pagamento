@@ -36,4 +36,12 @@ class Product extends ChangeNotifier {
   }
 
   bool get hasStock => totalStock > 0;
+
+  ItemSize? findSize(String name) {
+    try {
+      return sizes!.firstWhere((s) => s.name == name);
+    } catch (e) {
+      return null;
+    }
+  }
 }

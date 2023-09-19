@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:loja_virtual/models/cart_manager.dart';
 import 'package:loja_virtual/models/product.dart';
 import 'package:loja_virtual/models/product_manager.dart';
 import 'package:loja_virtual/models/user_manager.dart';
 import 'package:loja_virtual/screens/base/base_screen.dart';
+import 'package:loja_virtual/screens/cart/cart_screen.dart';
 import 'package:loja_virtual/screens/login/login_screen.dart';
 import 'package:loja_virtual/screens/product/product_screen.dart';
 import 'package:loja_virtual/screens/signup/signup_screen.dart';
@@ -35,6 +37,15 @@ class MyApp extends StatelessWidget {
           create: (_) => ProductManager(),
           lazy: false,
         ),
+        //ERRO NESSE PROXY;
+
+        ChangeNotifierProxyProvider<UserManager, CartManager>(
+          create: (_) => CartManager(),
+          lazy: false,
+          update:
+              (BuildContext context, userManager, CartManager? cartManager) =>
+                  cartManager!..updateUser(userManager),
+        ),
       ],
       child: MaterialApp(
         title: 'Loja do Gabriel',
@@ -54,6 +65,9 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(builder: (context) => LoginScreen());
             case '/signup':
               return MaterialPageRoute(builder: (context) => SignUpScreen());
+            case '/cart':
+              return MaterialPageRoute(
+                  builder: (context) => const CartScreen());
             case '/product':
               return MaterialPageRoute(
                   builder: (context) => ProductScreen(

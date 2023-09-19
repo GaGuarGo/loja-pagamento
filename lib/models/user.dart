@@ -19,6 +19,8 @@ class UserModel {
   DocumentReference get firestoreRef =>
       FirebaseFirestore.instance.doc('users/$id');
 
+  CollectionReference get cartReference => firestoreRef.collection('cart');
+
   Future<void> saveData() async {
     await firestoreRef.set(toMap());
   }
