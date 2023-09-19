@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loja_virtual/common/custom_icon_button.dart';
 import 'package:loja_virtual/models/cart_product.dart';
 
 class CartTile extends StatelessWidget {
@@ -9,6 +10,7 @@ class CartTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -49,10 +51,19 @@ class CartTile extends StatelessWidget {
             )),
             Column(
               children: [
+                CustomIconButton(
+                  iconData: Icons.add,
+                  color: Theme.of(context).primaryColor,
+                  onTap: cartProduct.increment,
+                ),
                 Text(
                   '${cartProduct.quantity}',
                   style: const TextStyle(fontSize: 20),
                 ),
+                CustomIconButton(
+                    iconData: Icons.remove,
+                    color: Theme.of(context).primaryColor,
+                    onTap: cartProduct.decrement),
               ],
             ),
           ],
