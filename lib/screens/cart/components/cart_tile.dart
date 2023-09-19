@@ -23,6 +23,7 @@ class CartTile extends StatelessWidget {
                 child: Padding(
               padding: const EdgeInsets.only(left: 16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     cartProduct.product!.name!,
@@ -46,6 +47,14 @@ class CartTile extends StatelessWidget {
                 ],
               ),
             )),
+            Column(
+              children: [
+                Text(
+                  '${cartProduct.quantity}',
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ],
+            ),
           ],
         ),
       ),

@@ -12,6 +12,14 @@ class ProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const CustomDrawer(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        foregroundColor: Theme.of(context).primaryColor,
+        onPressed: () {
+          Navigator.pushNamed(context, '/cart');
+        },
+        child: const Icon(Icons.shopping_cart_rounded),
+      ),
       appBar: AppBar(
         title: Consumer<ProductManager>(
           builder: (_, productManager, __) {

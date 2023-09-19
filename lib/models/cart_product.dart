@@ -12,7 +12,7 @@ class CartProduct {
   CartProduct.fromDocument(DocumentSnapshot document) {
     productId = document.get('pid') as String;
     quantity = document.get('quantity') as int;
-    size = document.get('size ') as String;
+    size = document.get('size') as String;
 
     firestrore.doc('products/$productId').get().then((doc) {
       product = Product.fromDocument(doc);
@@ -29,7 +29,7 @@ class CartProduct {
 
   ItemSize? get itemSize {
     if (product == null) return null;
-    return product?.findSize(size!);
+    return product!.findSize(size!);
   }
 
   num get unitPrice {
@@ -38,5 +38,17 @@ class CartProduct {
     } else {
       return itemSize!.price ?? 0;
     }
+  }
+
+  Map<String, dynamic> toCartItemMap() {
+    return {
+      'pid': productId,
+      'quantity': quantity,
+      'size': size,
+    };
+  }
+
+  bool stackable(Product product) {
+    return product.id == productId && product.selectedSize.name == size;
   }
 }

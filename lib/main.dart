@@ -37,6 +37,8 @@ class MyApp extends StatelessWidget {
           create: (_) => ProductManager(),
           lazy: false,
         ),
+        //ERRO NESSE PROXY;
+
         ProxyProvider<UserManager, CartManager>(
           create: (_) => CartManager(),
           lazy: false,
