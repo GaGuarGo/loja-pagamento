@@ -11,6 +11,7 @@ class CartProduct extends ChangeNotifier {
   }
 
   CartProduct.fromDocument(DocumentSnapshot document) {
+    id = document.id;
     productId = document.get('pid') as String;
     quantity = document.get('quantity') as int;
     size = document.get('size') as String;
@@ -21,6 +22,8 @@ class CartProduct extends ChangeNotifier {
   }
 
   final firestrore = FirebaseFirestore.instance;
+
+  String? id;
 
   String? productId;
   int? quantity;
@@ -61,5 +64,12 @@ class CartProduct extends ChangeNotifier {
   void decrement() {
     quantity = quantity! - 1;
     notifyListeners();
+  }
+
+  bool get hasStock {
+    final size = itemSize;
+    if (size == null) return false;
+
+    return size.stock! >= quantity!;
   }
 }
