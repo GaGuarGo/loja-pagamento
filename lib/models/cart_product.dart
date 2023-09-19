@@ -18,6 +18,7 @@ class CartProduct extends ChangeNotifier {
 
     firestrore.doc('products/$productId').get().then((doc) {
       product = Product.fromDocument(doc);
+      notifyListeners();
     });
   }
 
