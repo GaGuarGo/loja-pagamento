@@ -4,6 +4,7 @@ import 'package:loja_virtual/models/home_manager.dart';
 import 'package:provider/provider.dart';
 
 import 'components/section_list.dart';
+import 'components/section_staggered.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -50,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                         section: section,
                       );
                     case 'Staggered':
-                      return Container();
+                      return SectionStaggered(section: section);
                     default:
                       return Container();
                   }
