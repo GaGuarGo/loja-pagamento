@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/common/custom_drawer/custom_drawer.dart';
 import 'package:loja_virtual/models/home_manager.dart';
-import 'package:loja_virtual/models/section.dart';
 import 'package:provider/provider.dart';
 
 import 'components/section_list.dart';
