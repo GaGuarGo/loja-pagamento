@@ -40,4 +40,12 @@ class ProductManager extends ChangeNotifier {
         snapProducts.docs.map((d) => Product.fromDocument(d)).toList();
     notifyListeners();
   }
+
+  Product? findProductById(String id) {
+    try {
+      return allProducts.firstWhere((p) => p.id == id);
+    } catch (e) {
+      return null;
+    }
+  }
 }
