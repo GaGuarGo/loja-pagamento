@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:loja_virtual/screens/home/components/item_tile.dart';
 import 'package:loja_virtual/screens/home/components/section_header.dart';
 
 import '../../../models/section.dart';
@@ -18,32 +18,19 @@ class SectionStaggered extends StatelessWidget {
         children: [
           SectionHeader(section: section),
           SizedBox(
-            height: 250,
-            child: GridView.custom(
-              padding: const EdgeInsets.all(0),
-              shrinkWrap: true,
-              gridDelegate: SliverQuiltedGridDelegate(
-                crossAxisCount: 4,
-                mainAxisSpacing: 4,
-                crossAxisSpacing: 4,
-                repeatPattern: QuiltedGridRepeatPattern.inverted,
-                pattern: const [
-                  QuiltedGridTile(2, 2),
-                  QuiltedGridTile(1, 1),
-                  QuiltedGridTile(1, 1),
-                  QuiltedGridTile(1, 2),
-                ],
-              ),
+            height: 350,
+            child: GridView.builder(
               scrollDirection: Axis.vertical,
-              childrenDelegate: SliverChildBuilderDelegate(
-                childCount: section.items!.length,
-                (context, index) {
-                  return Image.network(
-                    section.items![index].image!,
-                    fit: BoxFit.cover,
-                  );
-                },
-              ),
+              shrinkWrap: true,
+              itemCount: section.items!.length,
+              itemBuilder: (context, index) {
+                return ItemTile(
+                  item: section.items![index],
+                  type: "Staggered",
+                );
+              },
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, mainAxisSpacing: 4),
             ),
           ),
         ],
