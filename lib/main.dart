@@ -12,7 +12,7 @@ import 'package:loja_virtual/screens/product/product_screen.dart';
 import 'package:loja_virtual/screens/signup/signup_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'firebase_options.dart';
+import 'common/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
