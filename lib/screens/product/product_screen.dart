@@ -23,6 +23,20 @@ class ProductScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(product.name!),
           centerTitle: true,
+          actions: [
+            Consumer<UserManager>(builder: (_, userManager, __) {
+              if (userManager.adminEnabled) {
+                return IconButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushReplacementNamed('/edit_product');
+                    },
+                    icon: const Icon(Icons.edit));
+              } else {
+                return Container();
+              }
+            }),
+          ],
         ),
         body: ListView(
           children: [
