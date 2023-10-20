@@ -56,7 +56,7 @@ class ItemTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: Text(
-                "A partir de: R\$ ${product.sizes!.first.price}",
+                "A partir de: R\$ ${product.basePrice.toStringAsFixed(2)}",
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontSize: 14,
