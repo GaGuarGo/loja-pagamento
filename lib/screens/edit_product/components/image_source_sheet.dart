@@ -2,9 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ImageSourceSheet extends StatelessWidget {
-  const ImageSourceSheet({super.key});
+  // ignore: use_key_in_widget_constructors
+  ImageSourceSheet({required this.onImageSelected});
+
+  final Function(File) onImageSelected;
+  final _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +27,12 @@ class ImageSourceSheet extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.95,
                 height: 45,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final file =
+                        await _picker.pickImage(source: ImageSource.camera);
+
+                    onImageSelected(File(file!.path));
+                  },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       shape: RoundedRectangleBorder(
@@ -36,7 +46,12 @@ class ImageSourceSheet extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.95,
                 height: 45,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final file =
+                        await _picker.pickImage(source: ImageSource.gallery);
+
+                    onImageSelected(File(file!.path));
+                  },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       shape: RoundedRectangleBorder(

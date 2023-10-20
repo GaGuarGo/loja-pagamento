@@ -14,8 +14,14 @@ class ImagesForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormField<List<dynamic>>(
-      initialValue: product.images,
+      initialValue: List.from(product.images as Iterable),
       builder: (state) {
+        void onImageSelected(File file) {
+          state.value?.add(file);
+          state.didChange(state.value);
+          Navigator.of(context).pop();
+        }
+
         return CarouselSlider(
           items: state.value?.map<Widget>((image) {
             return Stack(
@@ -56,11 +62,15 @@ class ImagesForm extends StatelessWidget {
                   if (Platform.isAndroid) {
                     showModalBottomSheet(
                         context: context,
-                        builder: (_) => const ImageSourceSheet());
+                        builder: (_) => ImageSourceSheet(
+                              onImageSelected: onImageSelected,
+                            ));
                   } else {
                     showCupertinoModalPopup(
                         context: context,
-                        builder: (_) => const ImageSourceSheet());
+                        builder: (_) => ImageSourceSheet(
+                              onImageSelected: onImageSelected,
+                            ));
                   }
                 },
               ),
