@@ -4,8 +4,15 @@ import 'package:loja_virtual/models/item_size.dart';
 
 class EditItemSize extends StatelessWidget {
   final VoidCallback onRemove;
+  final VoidCallback? onMoveUp;
+  final VoidCallback? onMoveDown;
   final ItemSize size;
-  const EditItemSize({super.key, required this.size, required this.onRemove});
+  const EditItemSize(
+      {super.key,
+      required this.size,
+      required this.onRemove,
+      required this.onMoveUp,
+      required this.onMoveDown});
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +53,13 @@ class EditItemSize extends StatelessWidget {
         CustomIconButton(
             iconData: Icons.remove, color: Colors.red, onTap: onRemove),
         CustomIconButton(
-            iconData: Icons.arrow_drop_up, color: Colors.black, onTap: () {}),
+            iconData: Icons.arrow_drop_up,
+            color: Colors.black,
+            onTap: onMoveUp),
         CustomIconButton(
-            iconData: Icons.arrow_drop_down, color: Colors.black, onTap: () {}),
+            iconData: Icons.arrow_drop_down,
+            color: Colors.black,
+            onTap: onMoveDown),
       ],
     );
   }
