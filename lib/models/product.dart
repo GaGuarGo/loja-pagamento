@@ -24,6 +24,8 @@ class Product extends ChangeNotifier {
   List<String>? images;
   List<ItemSize>? sizes;
 
+  List<dynamic>? newImages;
+
   ItemSize _selectedSize =
       ItemSize.fromMap({'name': '', 'price': 0, 'stock': 0});
   ItemSize get selectedSize => _selectedSize;
@@ -68,5 +70,10 @@ class Product extends ChangeNotifier {
       images: List.from(images!),
       sizes: sizes!.map((size) => size.clone()).toList(),
     );
+  }
+
+  @override
+  String toString() {
+    return 'Product{id: $id, name: $name, description: $description, images: $images, newImages: $newImages}';
   }
 }

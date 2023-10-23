@@ -49,6 +49,7 @@ class EditProductScreen extends StatelessWidget {
                         }
                         return null;
                       },
+                      onSaved: (name) => product.name = name,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
@@ -90,6 +91,7 @@ class EditProductScreen extends StatelessWidget {
                         }
                         return null;
                       },
+                      onSaved: (desc) => product.description = desc,
                     ),
                     SizesForm(product),
                     Container(
@@ -104,7 +106,9 @@ class EditProductScreen extends StatelessWidget {
                         ),
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            print("Válido");
+                            formKey.currentState!.save();
+
+                            print(product);
                           } else {
                             print("Inválido");
                           }
