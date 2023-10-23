@@ -18,6 +18,10 @@ class Product extends ChangeNotifier {
         .toList();
   }
 
+  final _fireStore = FirebaseFirestore.instance;
+
+  DocumentReference get firestoreRef => _fireStore.doc('products/$id');
+
   String? id;
   String? name;
   String? description;
@@ -59,6 +63,25 @@ class Product extends ChangeNotifier {
       return sizes!.firstWhere((s) => s.name == name);
     } catch (e) {
       return null;
+    }
+  }
+
+  List<Map<String, dynamic>> exportSizeList() {
+    return sizes!.map((size) => size.toMap()).toList();
+  }
+
+  Future<void> save() async {
+    final data = <String, dynamic>{
+      "name": name,
+      "description": description,
+      "sizes": exportSizeList(),
+    };
+
+    if (id == null) {
+      final doc = await _fireStore.collection('products').add(data);
+      id = doc.id;
+    } else {
+      await firestoreRef.update(data);
     }
   }
 

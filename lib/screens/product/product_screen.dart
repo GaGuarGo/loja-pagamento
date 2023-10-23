@@ -108,7 +108,7 @@ class ProductScreen extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(bottom: 8, top: 16),
                     child: Text(
-                      'Tamanhos:',
+                      'Opções:',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
@@ -119,6 +119,7 @@ class ProductScreen extends StatelessWidget {
                     spacing: 8,
                     runSpacing: 8,
                     runAlignment: WrapAlignment.spaceEvenly,
+                    //alignment: WrapAlignment.center,
                     children: product.sizes!.map((s) {
                       return SizeWidget(size: s);
                     }).toList(),
