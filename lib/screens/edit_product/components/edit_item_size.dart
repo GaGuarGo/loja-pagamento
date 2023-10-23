@@ -21,33 +21,57 @@ class EditItemSize extends StatelessWidget {
         Expanded(
           flex: 30,
           child: TextFormField(
+            onChanged: (name) => size.name = name,
             initialValue: size.name,
             decoration: const InputDecoration(
               labelText: 'Título',
               isDense: true,
             ),
+            validator: (text) {
+              if (text!.isEmpty) {
+                return "Inválido";
+              }
+              return null;
+            },
           ),
         ),
         const SizedBox(width: 4),
         Expanded(
           flex: 30,
           child: TextFormField(
+            onChanged: (stock) => size.stock = int.tryParse(stock),
             initialValue: size.stock?.toString(),
             decoration: const InputDecoration(
               labelText: 'Estoque',
               isDense: true,
             ),
             keyboardType: TextInputType.number,
+            validator: (stock) {
+              if (int.tryParse(stock!) == null) {
+                return "Inválido";
+              }
+              return null;
+            },
           ),
         ),
         const SizedBox(width: 4),
         Expanded(
           flex: 40,
           child: TextFormField(
+            onChanged: (price) => size.price = num.tryParse(price),
             initialValue: size.price?.toStringAsFixed(2),
             decoration: const InputDecoration(
-                labelText: 'Preço', isDense: true, prefixText: 'R\$'),
+              labelText: 'Preço',
+              isDense: true,
+              prefixText: 'R\$',
+            ),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            validator: (price) {
+              if (num.tryParse(price!) == null) {
+                return "Inválido";
+              }
+              return null;
+            },
           ),
         ),
         CustomIconButton(

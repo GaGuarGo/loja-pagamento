@@ -90,15 +90,28 @@ class EditProductScreen extends StatelessWidget {
                       },
                     ),
                     SizesForm(product),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          print("Válido");
-                        } else {
-                          print("Inválido");
-                        }
-                      },
-                      child: const Text("Salvar"),
+                    Container(
+                      height: 40,
+                      margin: const EdgeInsets.only(top: 8),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                        ),
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            print("Válido");
+                          } else {
+                            print("Inválido");
+                          }
+                        },
+                        child: const Text(
+                          "Salvar",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ]),
             )
