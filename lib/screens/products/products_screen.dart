@@ -5,6 +5,8 @@ import 'package:loja_virtual/screens/products/components/product_list_tile.dart'
 import 'package:loja_virtual/screens/products/components/search_dialog.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/user_manager.dart';
+
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
 
@@ -77,6 +79,19 @@ class ProductsScreen extends StatelessWidget {
               }
             },
           ),
+          Consumer<UserManager>(builder: (_, userManager, __) {
+            if (userManager.adminEnabled) {
+              return IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(
+                      '/edit_product',
+                    );
+                  },
+                  icon: const Icon(Icons.add_circle_outline_rounded));
+            } else {
+              return Container();
+            }
+          }),
         ],
       ),
       body: Consumer<ProductManager>(builder: (_, productManager, __) {

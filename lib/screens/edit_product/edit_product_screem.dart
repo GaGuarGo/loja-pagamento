@@ -1,15 +1,17 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unnecessary_null_comparison, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/product.dart';
-
 import 'components/images_form.dart';
 import 'components/sizes_form.dart';
 
 class EditProductScreen extends StatelessWidget {
   final Product product;
+  final bool editing;
 
-  EditProductScreen({super.key, required this.product});
+  EditProductScreen(Product? p)
+      : product = p?.clone() ?? Product(),
+        editing = p != null;
 
   final formKey = GlobalKey<FormState>();
 
@@ -20,7 +22,7 @@ class EditProductScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Editar Anúncio"),
+        title: Text(editing ? "Editar Produto" : "Criar Produto"),
         centerTitle: true,
       ),
       body: Form(
@@ -95,6 +97,7 @@ class EditProductScreen extends StatelessWidget {
                       margin: const EdgeInsets.only(top: 8),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          disabledBackgroundColor: primaryColor.withAlpha(100),
                           backgroundColor: primaryColor,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
