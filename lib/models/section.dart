@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loja_virtual/models/section_item.dart';
 
 class Section {
+  Section({this.name, this.type, this.items});
+
   Section.fromDocument(DocumentSnapshot document) {
     name = document.get('name') as String;
     type = document.get('type') as String;
@@ -14,6 +16,14 @@ class Section {
   String? name;
   String? type;
   List<SectionItem>? items;
+
+  Section clone() {
+    return Section(
+      name: name,
+      type: type,
+      items: items?.map((e) => e.clone()).toList(),
+    );
+  }
 
   @override
   String toString() {
