@@ -4,6 +4,7 @@ import 'package:loja_virtual/models/home_manager.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/user_manager.dart';
+import 'components/add_section_widget.dart';
 import 'components/section_list.dart';
 import 'components/section_staggered.dart';
 
@@ -75,15 +76,15 @@ class HomeScreen extends StatelessWidget {
                     homeManager.sections.map<Widget>((section) {
                   switch (section.type) {
                     case 'List':
-                      return SectionList(
-                        section: section,
-                      );
+                      return SectionList(section: section);
                     case 'Staggered':
                       return SectionStaggered(section: section);
                     default:
                       return Container();
                   }
                 }).toList();
+
+                if (homeManager.editing) children.add(AddSectionWidget());
 
                 return SliverList(
                   delegate: SliverChildListDelegate(children),
