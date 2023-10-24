@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/product_manager.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +14,8 @@ class ItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product =
-        context.read<ProductManager>().findProductById(item.product!);
+    // final product =
+    //     context.read<ProductManager>().findProductById(item.product!);
 
     return GestureDetector(
       onTap: () {
@@ -37,14 +39,16 @@ class ItemTile extends StatelessWidget {
               child: AspectRatio(
                   aspectRatio: 1,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image: item.image!,
-                      fit: BoxFit.cover,
-                    ),
-                  )),
+                      borderRadius: BorderRadius.circular(8),
+                      child: item.image is String
+                          ? FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image: item.image! as String,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.file(item.image! as File))),
             ),
+            /*
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4),
               child: Text(
@@ -63,6 +67,7 @@ class ItemTile extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
             ),
+            */
             const SizedBox(height: 4),
           ],
         ),

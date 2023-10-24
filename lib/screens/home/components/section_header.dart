@@ -5,12 +5,11 @@ import 'package:loja_virtual/models/section.dart';
 import 'package:provider/provider.dart';
 
 class SectionHeader extends StatelessWidget {
-  final Section section;
-  const SectionHeader({super.key, required this.section});
-
   @override
   Widget build(BuildContext context) {
     final homeManager = context.watch<HomeManager>();
+    final section = context.watch<Section>();
+
     if (homeManager.editing) {
       return Row(
         children: [
