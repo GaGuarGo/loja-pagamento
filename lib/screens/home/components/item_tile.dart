@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:loja_virtual/models/home_manager.dart';
 import 'package:loja_virtual/models/product_manager.dart';
+import 'package:loja_virtual/models/section.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -14,10 +16,34 @@ class ItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeManagaer = context.watch<HomeManager>();
+
     // final product =
     //     context.read<ProductManager>().findProductById(item.product!);
 
     return GestureDetector(
+      onLongPress: homeManagaer.editing
+          ? () {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: const Text("Editar Item"),
+                  content: Container(),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          context.read<Section>().removeItem(item);
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text(
+                          "Excluir",
+                          style: TextStyle(color: Colors.red),
+                        ))
+                  ],
+                ),
+              );
+            }
+          : null,
       onTap: () {
         if (item.product != null) {
           final product =
@@ -67,8 +93,9 @@ class ItemTile extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            */
+           
             const SizedBox(height: 4),
+             */
           ],
         ),
       ),
