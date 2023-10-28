@@ -51,8 +51,8 @@ class Section extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> save() async {
-    final data = <String, dynamic>{"name": name, "type": type};
+  Future<void> save(int pos) async {
+    final data = <String, dynamic>{"name": name, "type": type, "pos": pos};
 
     if (id == null) {
       final doc = await firestore.collection('home').add(data);
@@ -85,6 +85,16 @@ class Section extends ChangeNotifier {
     };
 
     await firestoreRef.update(itemsData);
+  }
+
+  Future<void> delete() async {
+    await firestoreRef.delete();
+    for (final item in items!) {
+      try {
+        final ref = await storage.refFromURL(item.image as String);
+        await ref.delete();
+      } catch (e) {}
+    }
   }
 
   bool valid() {
