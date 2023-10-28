@@ -50,8 +50,18 @@ class HomeManager extends ChangeNotifier {
   }
 
   void saveEditing() {
-    editing = false;
-    notifyListeners();
+    bool valid = true;
+
+    for (final section in _editingSections) {
+      if (section.valid()) {
+        valid = false;
+      }
+    }
+
+    if (!valid) return;
+
+    // editing = false;
+    // notifyListeners();
   }
 
   void discardEditing() {

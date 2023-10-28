@@ -11,30 +11,41 @@ class SectionHeader extends StatelessWidget {
     final section = context.watch<Section>();
 
     if (homeManager.editing) {
-      return Row(
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: TextFormField(
-              initialValue: section.name,
-              decoration: const InputDecoration(
-                labelText: 'Título:',
-                labelStyle: TextStyle(color: Colors.white),
-                isDense: true,
-                border: InputBorder.none,
+          Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  initialValue: section.name,
+                  decoration: const InputDecoration(
+                    labelText: 'Título:',
+                    labelStyle: TextStyle(color: Colors.white),
+                    isDense: true,
+                    border: InputBorder.none,
+                  ),
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 18),
+                  onChanged: (text) => section.name = text,
+                ),
               ),
-              style: const TextStyle(
+              CustomIconButton(
+                  iconData: Icons.delete,
                   color: Colors.white,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 18),
-              onChanged: (text) => section.name = text,
-            ),
+                  onTap: () {
+                    homeManager.removeSection(section);
+                  })
+            ],
           ),
-          CustomIconButton(
-              iconData: Icons.delete,
-              color: Colors.white,
-              onTap: () {
-                homeManager.removeSection(section);
-              })
+          if (section.error.isNotEmpty)
+            Text(
+              section.error,
+              style: const TextStyle(
+                  color: Colors.red, fontWeight: FontWeight.bold),
+            )
         ],
       );
     } else {
