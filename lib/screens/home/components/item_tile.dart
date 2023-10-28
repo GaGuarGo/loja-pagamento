@@ -31,7 +31,7 @@ class ItemTile extends StatelessWidget {
                   builder: (_) {
                     final product = context
                         .read<ProductManager>()
-                        .findProductById(item.product!);
+                        .findProductById(item.product);
 
                     return AlertDialog(
                       title: const Text("Editar Item"),
@@ -62,7 +62,7 @@ class ItemTile extends StatelessWidget {
                         TextButton(
                             onPressed: () async {
                               if (product != null) {
-                                item.product = "";
+                                item.product = null;
                               } else {
                                 final Product product =
                                     await Navigator.of(context)
