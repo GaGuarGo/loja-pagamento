@@ -1,4 +1,4 @@
-# loja_virtual
+# Loja Virtual
 
 Projeto de uma Loja virtual feita totalmente em Flutter que é inteiramente customizável.
 
