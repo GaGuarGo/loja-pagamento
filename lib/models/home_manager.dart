@@ -81,6 +81,20 @@ class HomeManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  void moveSectionUp(Section section) {
+    final index = sections.indexOf(section);
+    sections.removeAt(index);
+    sections.insert(index - 1, section);
+    notifyListeners();
+  }
+
+  void moveSectionDown(Section section) {
+    final index = sections.indexOf(section);
+    sections.removeAt(index);
+    sections.insert(index + 1, section);
+    notifyListeners();
+  }
+
   void discardEditing() {
     editing = false;
     notifyListeners();

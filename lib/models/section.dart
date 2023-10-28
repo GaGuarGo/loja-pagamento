@@ -102,6 +102,8 @@ class Section extends ChangeNotifier {
       error = "Título Inválido";
     } else if (items!.isEmpty) {
       error = "Insira Ao Menos Uma Imagem";
+    } else if (items!.any((element) => element.product == null)) {
+      error = "Há Produtos Desvinculados!";
     } else {
       error = "";
     }

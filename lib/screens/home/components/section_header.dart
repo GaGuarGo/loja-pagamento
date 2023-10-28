@@ -33,6 +33,23 @@ class SectionHeader extends StatelessWidget {
                 ),
               ),
               CustomIconButton(
+                iconData: Icons.arrow_drop_up,
+                color: Colors.white,
+                onTap: section != homeManager.sections.first
+                    ? () {
+                        homeManager.moveSectionUp(section);
+                      }
+                    : null,
+              ),
+              CustomIconButton(
+                  iconData: Icons.arrow_drop_down,
+                  color: Colors.white,
+                  onTap: section != homeManager.sections.last
+                      ? () {
+                          homeManager.moveSectionDown(section);
+                        }
+                      : null),
+              CustomIconButton(
                   iconData: Icons.delete,
                   color: Colors.white,
                   onTap: () {
