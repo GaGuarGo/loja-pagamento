@@ -14,6 +14,7 @@ import 'package:loja_virtual/screens/login/login_screen.dart';
 import 'package:loja_virtual/screens/product/product_screen.dart';
 import 'package:loja_virtual/screens/select_product/select_product_screen.dart';
 import 'package:loja_virtual/screens/signup/signup_screen.dart';
+import 'package:loja_virtual/services/cepaberto_service.dart';
 import 'package:provider/provider.dart';
 
 import 'common/firebase_options.dart';
@@ -25,7 +26,9 @@ void main() async {
   );
   runApp(const MyApp());
 
-  // CepAbertoService().getAddressFromCep('13.326-145');
+  CepAbertoService().getAddressFromCep('13.326-145').then((value) {
+    print(value);
+  });
 }
 
 class MyApp extends StatelessWidget {
