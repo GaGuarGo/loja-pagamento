@@ -24,6 +24,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
+
+  // CepAbertoService().getAddressFromCep('13.326-145');
 }
 
 class MyApp extends StatelessWidget {
