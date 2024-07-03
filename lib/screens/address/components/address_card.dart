@@ -16,31 +16,29 @@ class AddressCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-        child: Consumer<CartManager>(
-          builder: (_, cartManager, __) {
+        child: Consumer<CartManager>(builder: (_, cartManager, __) {
+          final address = cartManager.address ?? Address();
+          debugPrint(address.toString());
 
-            final address = cartManager.address ?? Address();
-            debugPrint(address.toString());
-
-            return Form(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Endereço de Entrega",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
+          return Form(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Endereço de Entrega",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
                   ),
-                  CepInputField(address: address),
-                  AddressInputField(address: address),
-                ],
-              ),
-            );
-          }
-        ),
+                ),
+                CepInputField(address: address),
+                AddressInputField(address: address),
+               
+              ],
+            ),
+          );
+        }),
       ),
     );
   }

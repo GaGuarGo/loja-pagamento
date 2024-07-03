@@ -10,9 +10,11 @@ class AddressInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartManager = context.watch<CartManager>();
+
     String? emptyValidator(String? text) =>
         text!.isEmpty ? 'Campo obrigatório' : null;
-    if (address.zipCode != null)
+    if (address.zipCode != null && cartManager.deliveryPrice == null)
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -39,7 +41,7 @@ class AddressInputField extends StatelessWidget {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   keyboardType: TextInputType.number,
                   validator: emptyValidator,
-                  onSaved: (t) => address.street = t,
+                  onSaved: (t) => address.number = t,
                 ),
               ),
               const SizedBox(width: 16),
@@ -144,6 +146,12 @@ class AddressInputField extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12))),
           ),
         ],
+      );
+    else if (address.zipCode != null)
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Text(
+            'Logradouro: ${address.street}, ${address.number}\nBairro: ${address.district}\n${address.city} - ${address.state}'),
       );
     else
       return Container();
