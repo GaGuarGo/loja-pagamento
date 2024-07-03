@@ -111,4 +111,9 @@ class CartManager extends ChangeNotifier {
       log("Erro ao Carregar CEP", error: e, stackTrace: s);
     }
   }
+
+  void removeAddress() {
+    address = null;
+    notifyListeners();
+  }
 }
