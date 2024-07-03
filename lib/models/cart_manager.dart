@@ -1,13 +1,17 @@
+import 'dart:developer';
 import 'package:flutter/foundation.dart';
+import 'package:loja_virtual/models/address.dart';
 import 'package:loja_virtual/models/cart_product.dart';
 import 'package:loja_virtual/models/product.dart';
 import 'package:loja_virtual/models/user.dart';
 import 'package:loja_virtual/models/user_manager.dart';
+import 'package:loja_virtual/services/cepaberto_service.dart';
 
 class CartManager extends ChangeNotifier {
   List<CartProduct> items = [];
 
   UserModel? user;
+  Address? address;
 
   num productsPrice = 0.0;
 
@@ -83,5 +87,30 @@ class CartManager extends ChangeNotifier {
       if (!cp.hasStock) return false;
     }
     return true;
+  }
+
+  //ADDRESS
+
+  Future<void> getAddress(String cep) async {
+    final cepAbertoService = CepAbertoService();
+
+    try {
+      final cepApertoAddress = await cepAbertoService.getAddressFromCep(cep);
+
+      if (cepApertoAddress != null) {
+        address = Address(
+          street: cepApertoAddress.logradouro,
+          district: cepApertoAddress.bairro,
+          zipCode: cepApertoAddress.cep,
+          city: cepApertoAddress.cidade!.nome,
+          state: cepApertoAddress.estado!.sigla,
+          lat: cepApertoAddress.latitude,
+          long: cepApertoAddress.longitude,
+        );
+        notifyListeners();
+      }
+    } catch (e, s) {
+      log("Erro ao Carregar CEP", error: e, stackTrace: s);
+    }
   }
 }

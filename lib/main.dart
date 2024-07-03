@@ -14,7 +14,6 @@ import 'package:loja_virtual/screens/login/login_screen.dart';
 import 'package:loja_virtual/screens/product/product_screen.dart';
 import 'package:loja_virtual/screens/select_product/select_product_screen.dart';
 import 'package:loja_virtual/screens/signup/signup_screen.dart';
-import 'package:loja_virtual/services/cepaberto_service.dart';
 import 'package:provider/provider.dart';
 
 import 'common/firebase_options.dart';
@@ -25,10 +24,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
-
-  CepAbertoService().getAddressFromCep('13.326-145').then((value) {
-    print(value);
-  });
 }
 
 class MyApp extends StatelessWidget {
@@ -69,9 +64,13 @@ class MyApp extends StatelessWidget {
         title: 'Loja do Gabriel',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          useMaterial3: false,
           primaryColor: const Color.fromARGB(255, 4, 125, 141),
           scaffoldBackgroundColor: const Color.fromARGB(255, 4, 125, 141),
           appBarTheme: const AppBarTheme(
+            titleTextStyle: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+            iconTheme: IconThemeData(color: Colors.white),
             elevation: 0.0,
             backgroundColor: Color.fromARGB(255, 4, 125, 141),
           ),
@@ -101,7 +100,7 @@ class MyApp extends StatelessWidget {
                   builder: (context) => ProductScreen(
                         product: settings.arguments as Product,
                       ));
-            case '/case':
+            case '/base':
             default:
               return MaterialPageRoute(builder: (context) => BaseScreen());
           }

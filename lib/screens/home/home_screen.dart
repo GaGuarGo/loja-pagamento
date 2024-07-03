@@ -68,7 +68,7 @@ class HomeScreen extends StatelessWidget {
                 floating: true,
                 flexibleSpace: const FlexibleSpaceBar(
                   title: Text("Loja do Gabriel"),
-                  centerTitle: true,
+                  centerTitle: false,
                 ),
               ),
               Consumer<HomeManager>(builder: (_, homeManager, __) {

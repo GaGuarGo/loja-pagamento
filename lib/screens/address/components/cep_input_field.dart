@@ -1,8 +1,11 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loja_virtual/models/cart_manager.dart';
+import 'package:provider/provider.dart';
 
 class CepInputField extends StatelessWidget {
-  const CepInputField({super.key});
+  final cepController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -10,13 +13,29 @@ class CepInputField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextFormField(
+          controller: cepController,
           decoration: const InputDecoration(
               isDense: true, labelText: 'CEP', hintText: '12.345-678'),
           keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            CepInputFormatter()
+          ],
+          validator: (cep) {
+            if (cep!.isEmpty) {
+              return "Campo Obrigatório";
+            } else if (cep.length != 10) {
+              return "CEP Inválido";
+            }
+            return null;
+          },
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            if (Form.of(context).validate()) {
+              context.read<CartManager>().getAddress(cepController.text);
+            }
+          },
           child: Text(
             "Buscar CEP",
             style: TextStyle(color: Colors.white),
