@@ -6,9 +6,7 @@ class Address {
       this.district,
       this.zipCode,
       this.city,
-      this.state,
-      this.lat,
-      this.long});
+      this.state});
 
   String? street;
   String? number;
@@ -17,7 +15,4 @@ class Address {
   String? zipCode;
   String? city;
   String? state;
-
-  double? lat;
-  double? long;
 }

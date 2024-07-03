@@ -102,10 +102,8 @@ class CartManager extends ChangeNotifier {
           street: cepApertoAddress.logradouro,
           district: cepApertoAddress.bairro,
           zipCode: cepApertoAddress.cep,
-          city: cepApertoAddress.cidade!.nome,
-          state: cepApertoAddress.estado!.sigla,
-          lat: cepApertoAddress.latitude,
-          long: cepApertoAddress.longitude,
+          city: cepApertoAddress.cidade,
+          state: cepApertoAddress.estado,
         );
         notifyListeners();
       }

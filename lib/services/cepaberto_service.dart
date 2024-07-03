@@ -7,7 +7,7 @@ const token = '98a1f7082f95f7685dcbb404a2e3d180';
 class CepAbertoService {
   Future<CepAddress?> getAddressFromCep(String cep) async {
     final cleanCEP = cep.replaceAll('.', '').replaceAll('-', '');
-    final endpoint = "https://www.cepaberto.com/api/v3/cep?cep=$cleanCEP";
+    final endpoint = "https://viacep.com.br/ws/$cleanCEP/json/";
 
     final Dio dio = Dio();
 
