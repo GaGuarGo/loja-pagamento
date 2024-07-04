@@ -21,6 +21,27 @@ class CheckoutScreen extends StatelessWidget {
         ),
         body: Consumer<CheckoutManager>(
           builder: (_, checkoutManager, __) {
+            if (checkoutManager.laoding)
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Processando seu Pagamento...',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+
             return ListView(
               children: [
                 PriceCard(
@@ -36,7 +57,11 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                         ),
                       );
-                      Navigator.of(context).popUntil((route) => route.settings.name == '/cart');
+                      Navigator.of(context)
+                          .popUntil((route) => route.settings.name == '/cart');
+                    }, onSuccess: () {
+                      Navigator.of(context)
+                          .popUntil((route) => route.settings.name == '/base');
                     });
                   },
                 ),

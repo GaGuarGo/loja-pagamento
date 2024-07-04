@@ -108,7 +108,10 @@ class MyApp extends StatelessWidget {
                   builder: (context) => const CheckoutScreen());
             case '/base':
             default:
-              return MaterialPageRoute(builder: (context) => BaseScreen());
+              return MaterialPageRoute(
+                builder: (context) => BaseScreen(),
+                settings: settings,
+              );
           }
         },
       ),
