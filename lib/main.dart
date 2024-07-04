@@ -7,10 +7,12 @@ import 'package:loja_virtual/models/orders_manager.dart';
 import 'package:loja_virtual/models/product.dart';
 import 'package:loja_virtual/models/product_manager.dart';
 import 'package:loja_virtual/models/user_manager.dart';
+import 'package:loja_virtual/models/user_order.dart';
 import 'package:loja_virtual/screens/address/address_screen.dart';
 import 'package:loja_virtual/screens/base/base_screen.dart';
 import 'package:loja_virtual/screens/cart/cart_screen.dart';
 import 'package:loja_virtual/screens/checkout/checkout_screen.dart';
+import 'package:loja_virtual/screens/confirmation/confirmation_screen.dart';
 import 'package:loja_virtual/screens/edit_product/edit_product_screen.dart';
 import 'package:loja_virtual/screens/login/login_screen.dart';
 import 'package:loja_virtual/screens/product/product_screen.dart';
@@ -51,9 +53,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProxyProvider<UserManager, OrdersManager>(
           create: (_) => OrdersManager(),
           lazy: false,
-          update:
-              (BuildContext context, userManager, OrdersManager? orderManager) =>
-                  orderManager!..updateUser(userManager),
+          update: (BuildContext context, userManager,
+                  OrdersManager? orderManager) =>
+              orderManager!..updateUser(userManager),
         ),
         ChangeNotifierProxyProvider<UserManager, CartManager>(
           create: (_) => CartManager(),
@@ -114,6 +116,11 @@ class MyApp extends StatelessWidget {
             case '/checkout':
               return MaterialPageRoute(
                   builder: (context) => const CheckoutScreen());
+            case '/confirmation':
+              return MaterialPageRoute(
+                  builder: (context) => ConfirmationScreen(
+                        order: settings.arguments as UserOrder,
+                      ));
             case '/base':
             default:
               return MaterialPageRoute(
