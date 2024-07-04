@@ -30,6 +30,8 @@ class CartProduct extends ChangeNotifier {
   int? quantity;
   String? size;
 
+  num? fixedPrice;
+
   Product? product;
   void setProduct(Product p) {
     product = p;
@@ -64,6 +66,7 @@ class CartProduct extends ChangeNotifier {
       'pid': productId,
       'quantity': quantity,
       'size': size,
+      'fixedPrice': fixedPrice ?? unitPrice,
     };
   }
 
