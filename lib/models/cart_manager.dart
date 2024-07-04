@@ -30,6 +30,7 @@ class CartManager extends ChangeNotifier {
 
   updateUser(UserManager userManager) {
     user = userManager.user;
+    productsPrice = 0.0;
     items.clear();
     removeAddress();
 
