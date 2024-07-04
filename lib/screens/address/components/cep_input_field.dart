@@ -6,18 +6,25 @@ import 'package:loja_virtual/models/address.dart';
 import 'package:loja_virtual/models/cart_manager.dart';
 import 'package:provider/provider.dart';
 
-class CepInputField extends StatelessWidget {
+class CepInputField extends StatefulWidget {
   final Address address;
-  CepInputField({super.key, required this.address});
+  const CepInputField({super.key, required this.address});
 
-  final cepController = TextEditingController();
+  @override
+  State<CepInputField> createState() => _CepInputFieldState();
+}
+
+class _CepInputFieldState extends State<CepInputField> {
+  final TextEditingController cepController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    if (address.zipCode == null)
+    final cartManager = context.watch<CartManager>();
+    if (widget.address.zipCode == null)
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextFormField(
+            enabled: !cartManager.loading,
             controller: cepController,
             decoration: const InputDecoration(
                 isDense: true, labelText: 'CEP', hintText: '12.345-678'),
@@ -35,12 +42,33 @@ class CepInputField extends StatelessWidget {
               return null;
             },
           ),
+          if (cartManager.loading)
+            LinearProgressIndicator(
+              valueColor:
+                  AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+              backgroundColor: Colors.transparent,
+            ),
           ElevatedButton(
-            onPressed: () {
-              if (Form.of(context).validate()) {
-                context.read<CartManager>().getAddress(cepController.text);
-              }
-            },
+            onPressed: !cartManager.loading
+                ? () async {
+                    if (Form.of(context).validate()) {
+                      try {
+                     await   context
+                            .read<CartManager>()
+                            .getAddress(cepController.text);
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text(
+                              '$e',
+                            ),
+                          ),
+                        );
+                      }
+                    }
+                  }
+                : null,
             child: Text(
               "Buscar CEP",
               style: TextStyle(color: Colors.white),
@@ -62,18 +90,20 @@ class CepInputField extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'CEP: ${address.zipCode}',
-                style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                'CEP: ${widget.address.zipCode}',
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold),
               ),
             ),
             CustomIconButton(
-                iconData: Icons.edit,
-                color: Theme.of(context).primaryColor,
-                onTap: () {
-                  context.read<CartManager>().removeAddress();
-                },
-                size: 20,
-                )
+              iconData: Icons.edit,
+              color: Theme.of(context).primaryColor,
+              onTap: () {
+                context.read<CartManager>().removeAddress();
+              },
+              size: 20,
+            )
           ],
         ),
       );

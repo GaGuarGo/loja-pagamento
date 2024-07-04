@@ -19,6 +19,13 @@ class CartManager extends ChangeNotifier {
   num? deliveryPrice;
   num get totalPrice => productsPrice + (deliveryPrice ?? 0);
 
+  bool _loading = false;
+  bool get loading => _loading;
+  set loading(bool value) {
+    _loading = value;
+    notifyListeners();
+  }
+
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   updateUser(UserManager userManager) {
@@ -102,6 +109,8 @@ class CartManager extends ChangeNotifier {
   Future<void> getAddress(String cep) async {
     final cepAbertoService = CepAbertoService();
 
+    loading = true;
+
     try {
       final cepApertoAddress = await cepAbertoService.getAddressFromCep(cep);
 
@@ -113,21 +122,27 @@ class CartManager extends ChangeNotifier {
           city: cepApertoAddress.cidade,
           state: cepApertoAddress.estado,
         );
-        notifyListeners();
       }
+
+      loading = false;
     } catch (e, s) {
+      loading = false;
       log("Erro ao Carregar CEP", error: e, stackTrace: s);
+      return Future.error("CEP Inválido");
     }
   }
 
   Future<void> setAddress(Address address) async {
+    loading = true;
+
     this.address = address;
 
     //Endereço fixo por causa o cepAberto parou de funcionar no momento
     if (await calculateDelivery(
         lat: -23.200375017697805, long: -47.29914351386176)) {
-      notifyListeners();
+      loading = false;
     } else {
+      loading = false;
       return Future.error('Endereço fora do raio de entrega :(');
     }
   }
