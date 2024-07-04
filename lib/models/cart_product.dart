@@ -31,7 +31,7 @@ class CartProduct extends ChangeNotifier {
   String? size;
 
   Product? product;
-  void setProduct(Product p){
+  void setProduct(Product p) {
     product = p;
     notifyListeners();
   }
@@ -52,6 +52,14 @@ class CartProduct extends ChangeNotifier {
   num get totalPrice => unitPrice * quantity!;
 
   Map<String, dynamic> toCartItemMap() {
+    return {
+      'pid': productId,
+      'quantity': quantity,
+      'size': size,
+    };
+  }
+
+  Map<String, dynamic> toOrderItemMap() {
     return {
       'pid': productId,
       'quantity': quantity,
