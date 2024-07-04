@@ -31,6 +31,10 @@ class CartProduct extends ChangeNotifier {
   String? size;
 
   Product? product;
+  void setProduct(Product p){
+    product = p;
+    notifyListeners();
+  }
 
   ItemSize? get itemSize {
     if (product == null) return null;

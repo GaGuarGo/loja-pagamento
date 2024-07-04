@@ -26,7 +26,18 @@ class CheckoutScreen extends StatelessWidget {
                 PriceCard(
                   buttonText: 'Finalizar Pedido',
                   onPressed: () {
-                    checkoutManager.checkout();
+                    checkoutManager.checkout(onStockFail: (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(
+                            e.toString(),
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      );
+                      Navigator.of(context).popUntil((route) => route.settings.name == '/cart');
+                    });
                   },
                 ),
               ],

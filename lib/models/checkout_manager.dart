@@ -14,10 +14,11 @@ class CheckoutManager extends ChangeNotifier {
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<void> checkout() async {
+  Future<void> checkout({required Function onStockFail}) async {
     try {
       await _decrementStock();
     } catch (e, s) {
+      onStockFail(e);
       log("Erro ao Finalizar Pedido", error: e, stackTrace: s);
     }
   }
@@ -58,7 +59,7 @@ class CheckoutManager extends ChangeNotifier {
         }
 
         //Atulizando o estoque disponivel no carrinho
-        cartProduct.product = product;
+        cartProduct.setProduct(product);
 
         final size = product.findSize(cartProduct.size!);
 
