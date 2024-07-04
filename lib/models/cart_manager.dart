@@ -31,9 +31,11 @@ class CartManager extends ChangeNotifier {
   updateUser(UserManager userManager) {
     user = userManager.user;
     items.clear();
+    removeAddress();
 
     if (user != null) {
       _loadCartItens();
+      _loadUserAddress();
     }
   }
 
@@ -42,6 +44,15 @@ class CartManager extends ChangeNotifier {
     items = cartSnap.docs
         .map((d) => CartProduct.fromDocument(d)..addListener(_onItemUpdated))
         .toList();
+  }
+
+  Future<void> _loadUserAddress() async {
+    if (user?.address != null &&
+        await calculateDelivery(
+            lat: -23.200375017697805, long: -47.29914351386176)) {
+      address = user!.address;
+      notifyListeners();
+    }
   }
 
   void addToCart(Product product) {
@@ -140,6 +151,8 @@ class CartManager extends ChangeNotifier {
     //Endereço fixo por causa o cepAberto parou de funcionar no momento
     if (await calculateDelivery(
         lat: -23.200375017697805, long: -47.29914351386176)) {
+      user?.setAddress(address);
+
       loading = false;
     } else {
       loading = false;
