@@ -6,6 +6,7 @@ import 'package:loja_virtual/models/home_manager.dart';
 import 'package:loja_virtual/models/product.dart';
 import 'package:loja_virtual/models/product_manager.dart';
 import 'package:loja_virtual/models/user_manager.dart';
+import 'package:loja_virtual/screens/address/address_screen.dart';
 import 'package:loja_virtual/screens/base/base_screen.dart';
 import 'package:loja_virtual/screens/cart/cart_screen.dart';
 import 'package:loja_virtual/screens/edit_product/edit_product_screen.dart';
@@ -63,9 +64,13 @@ class MyApp extends StatelessWidget {
         title: 'Loja do Gabriel',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          useMaterial3: false,
           primaryColor: const Color.fromARGB(255, 4, 125, 141),
           scaffoldBackgroundColor: const Color.fromARGB(255, 4, 125, 141),
           appBarTheme: const AppBarTheme(
+            titleTextStyle: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+            iconTheme: IconThemeData(color: Colors.white),
             elevation: 0.0,
             backgroundColor: Color.fromARGB(255, 4, 125, 141),
           ),
@@ -80,6 +85,9 @@ class MyApp extends StatelessWidget {
             case '/cart':
               return MaterialPageRoute(
                   builder: (context) => const CartScreen());
+            case '/address':
+              return MaterialPageRoute(
+                  builder: (context) => const AddressScreen());
             case '/edit_product':
               return MaterialPageRoute(
                   builder: (context) =>
@@ -92,7 +100,7 @@ class MyApp extends StatelessWidget {
                   builder: (context) => ProductScreen(
                         product: settings.arguments as Product,
                       ));
-            case '/case':
+            case '/base':
             default:
               return MaterialPageRoute(builder: (context) => BaseScreen());
           }
