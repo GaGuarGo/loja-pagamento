@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/user_order.dart';
+import 'package:loja_virtual/screens/orders/components/order_product_tile.dart';
 
 class OrderTile extends StatelessWidget {
   final UserOrder order;
@@ -9,7 +10,7 @@ class OrderTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: ExpansionTile(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,6 +43,12 @@ class OrderTile extends StatelessWidget {
             ),
           ],
         ),
+        children: [
+          Column(
+            children:
+                order.items!.map((e) => OrderProductTile(cartProduct: e)).toList(),
+          )
+        ],
       ),
     );
   }
