@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/user.dart';
@@ -7,9 +9,13 @@ import 'package:loja_virtual/models/user_order.dart';
 class OrdersManager extends ChangeNotifier {
   UserModel? user;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  StreamSubscription? _subscription;
 
   updateUser(UserManager userManager) {
     user = userManager.user;
+    orders.clear();
+
+    _subscription?.cancel();
     if (user != null) {
       _listenToOrders();
     }
@@ -18,7 +24,7 @@ class OrdersManager extends ChangeNotifier {
   List<UserOrder> orders = [];
 
   void _listenToOrders() {
-    firestore
+    _subscription = firestore
         .collection('orders')
         .where('user', isEqualTo: user!.id)
         .snapshots()
@@ -27,8 +33,13 @@ class OrdersManager extends ChangeNotifier {
       for (final doc in event.docs) {
         orders.add(UserOrder.fromDocument(doc));
       }
-
-      print(orders);
+      notifyListeners();
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _subscription?.cancel();
   }
 }

@@ -30,6 +30,8 @@ class UserOrder {
   Address? address;
   Timestamp? date;
 
+  String get formattedId => '#${orderId!.padLeft(6, '0')}';
+
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> save() async {
