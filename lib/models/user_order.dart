@@ -3,12 +3,15 @@ import 'package:loja_virtual/models/address.dart';
 import 'package:loja_virtual/models/cart_manager.dart';
 import 'package:loja_virtual/models/cart_product.dart';
 
+enum Status { canceled, preparing, transporting, delivered }
+
 class UserOrder {
   UserOrder.fromCartManager(CartManager cartManager) {
     items = List.from(cartManager.items);
     price = cartManager.totalPrice;
     userId = cartManager.user!.id;
     address = cartManager.address;
+    status = Status.preparing;
   }
   UserOrder.fromDocument(QueryDocumentSnapshot doc) {
     orderId = doc.id;
@@ -20,7 +23,8 @@ class UserOrder {
     price = doc.get('price') as num;
     userId = doc.get('user') as String;
     address = Address.fromMap(doc.get('address') as Map<String, dynamic>);
-    // date = doc.get('date') as Timestamp;
+    date = doc.get('date') as Timestamp;
+    status = Status.values[doc.get('status')];
   }
 
   String? orderId;
@@ -29,6 +33,24 @@ class UserOrder {
   String? userId;
   Address? address;
   Timestamp? date;
+  Status? status;
+
+  String get statusText => getStatusText(status!);
+
+  static String getStatusText(Status status) {
+    switch (status) {
+      case Status.canceled:
+        return 'Cancelado';
+      case Status.preparing:
+        return 'Em preparação';
+      case Status.transporting:
+        return 'Em transporte';
+      case Status.delivered:
+        return 'Entregue';
+      default:
+        return '';
+    }
+  }
 
   String get formattedId => '#${orderId!.padLeft(6, '0')}';
 
@@ -44,6 +66,8 @@ class UserOrder {
       'price': price,
       'user': userId,
       'address': address!.toMap(),
+      'status': status!.index,
+      'date': Timestamp.now(),
     };
   }
 
