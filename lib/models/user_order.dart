@@ -13,7 +13,7 @@ class UserOrder {
     address = cartManager.address;
     status = Status.preparing;
   }
-  UserOrder.fromDocument(QueryDocumentSnapshot doc) {
+  UserOrder.fromDocument(DocumentSnapshot doc) {
     orderId = doc.id;
 
     items = (doc.get('items') as List<dynamic>)
@@ -56,6 +56,13 @@ class UserOrder {
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  DocumentReference get firestoreRef =>
+      firestore.collection('orders').doc(orderId);
+
+  void updateFromDocument(DocumentSnapshot doc) {
+    status = Status.values[doc.get('status')];
+  }
+
   Future<void> save() async {
     firestore.collection('orders').doc(orderId).set(toMap());
   }
@@ -64,10 +71,7 @@ class UserOrder {
     if (status!.index >= Status.transporting.index) {
       return () {
         status = Status.values[status!.index - 1];
-        firestore
-            .collection('orders')
-            .doc(orderId)
-            .update({'status': status!.index});
+        firestoreRef.update({'status': status!.index});
       };
     }
     return null;
@@ -77,13 +81,15 @@ class UserOrder {
     if (status!.index <= Status.transporting.index) {
       return () {
         status = Status.values[status!.index + 1];
-        firestore
-            .collection('orders')
-            .doc(orderId)
-            .update({'status': status!.index});
+        firestoreRef.update({'status': status!.index});
       };
     }
     return null;
+  }
+
+  void cancel() {
+    status = Status.canceled;
+    firestoreRef.update({'status': status!.index});
   }
 
   Map<String, dynamic> toMap() {

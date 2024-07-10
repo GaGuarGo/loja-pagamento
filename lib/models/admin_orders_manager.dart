@@ -19,14 +19,20 @@ class AdminOrdersManager extends ChangeNotifier {
   List<UserOrder> orders = [];
 
   void _listenToOrders() {
-    _subscription = firestore
-        .collection('orders')
-        .snapshots()
-        .listen((event) async {
-      orders.clear();
-      for (final doc in event.docs) {
-        orders.add(UserOrder.fromDocument(doc));
+    _subscription =
+        firestore.collection('orders').snapshots().listen((event) async {
+      for (final change in event.docChanges) {
+        switch (change.type) {
+          case DocumentChangeType.added:
+            orders.add(UserOrder.fromDocument(change.doc));
+          case DocumentChangeType.modified:
+            final modOrder =
+                orders.firstWhere((o) => o.orderId == change.doc.id);
+            modOrder.updateFromDocument(change.doc);
+          case DocumentChangeType.removed:
+        }
       }
+
       notifyListeners();
     });
   }
