@@ -59,12 +59,15 @@ class AdminOrdersScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: Status.values
                         .map((s) => CheckboxListTile(
+                              activeColor: Theme.of(context).primaryColor,
                               dense: true,
                               title: Text(
                                 UserOrder.getStatusText(s),
                               ),
-                              value: true,
-                              onChanged: (value) {},
+                              value: ordersManager.statusFilter.contains(s),
+                              onChanged: (value) {
+                                ordersManager.setStatusFilter(status: s);
+                              },
                             ))
                         .toList(),
                   ),
@@ -114,7 +117,10 @@ class AdminOrdersScreen extends StatelessWidget {
                             showControls: true,
                           );
                         }),
-                  )
+                  ),
+                const SizedBox(
+                  height: 120,
+                )
               ],
             ),
           );

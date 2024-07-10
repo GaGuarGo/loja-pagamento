@@ -19,6 +19,7 @@ class AdminOrdersManager extends ChangeNotifier {
 
   List<UserOrder> _orders = [];
   UserModel? userFilter;
+  List<Status> statusFilter = [Status.preparing, Status.canceled];
 
   void _listenToOrders() {
     _subscription =
@@ -39,12 +40,23 @@ class AdminOrdersManager extends ChangeNotifier {
     });
   }
 
+  void setStatusFilter({required Status status}) {
+    if (statusFilter.contains(status)) {
+      statusFilter.remove(status);
+    } else {
+      statusFilter.add(status);
+    }
+    notifyListeners();
+  }
+
   List<UserOrder> get filteredOrders {
     List<UserOrder> output = _orders.reversed.toList();
 
     if (userFilter != null) {
       output = output.where((o) => o.userId == userFilter!.id).toList();
     }
+
+    output = output.where((o) => statusFilter.contains(o.status)).toList();
 
     return output;
   }
