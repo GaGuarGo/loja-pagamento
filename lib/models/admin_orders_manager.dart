@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:loja_virtual/models/user.dart';
 import 'package:loja_virtual/models/user_order.dart';
 
 class AdminOrdersManager extends ChangeNotifier {
@@ -9,14 +10,15 @@ class AdminOrdersManager extends ChangeNotifier {
   StreamSubscription? _subscription;
 
   updateAdmin(bool adminEnabled) {
-    orders.clear();
+    _orders.clear();
     _subscription?.cancel();
     if (adminEnabled) {
       _listenToOrders();
     }
   }
 
-  List<UserOrder> orders = [];
+  List<UserOrder> _orders = [];
+  UserModel? userFilter;
 
   void _listenToOrders() {
     _subscription =
@@ -24,10 +26,10 @@ class AdminOrdersManager extends ChangeNotifier {
       for (final change in event.docChanges) {
         switch (change.type) {
           case DocumentChangeType.added:
-            orders.add(UserOrder.fromDocument(change.doc));
+            _orders.add(UserOrder.fromDocument(change.doc));
           case DocumentChangeType.modified:
             final modOrder =
-                orders.firstWhere((o) => o.orderId == change.doc.id);
+                _orders.firstWhere((o) => o.orderId == change.doc.id);
             modOrder.updateFromDocument(change.doc);
           case DocumentChangeType.removed:
         }
@@ -35,6 +37,21 @@ class AdminOrdersManager extends ChangeNotifier {
 
       notifyListeners();
     });
+  }
+
+  List<UserOrder> get filteredOrders {
+    List<UserOrder> output = _orders.reversed.toList();
+
+    if (userFilter != null) {
+      output = output.where((o) => o.userId == userFilter!.id).toList();
+    }
+
+    return output;
+  }
+
+  void setUserFilter(UserModel? user) {
+    userFilter = user;
+    notifyListeners();
   }
 
   @override

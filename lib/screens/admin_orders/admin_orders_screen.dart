@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/common/custom_drawer/custom_drawer.dart';
+import 'package:loja_virtual/common/custom_icon_button.dart';
 import 'package:loja_virtual/common/empty_card.dart';
 import 'package:loja_virtual/models/admin_orders_manager.dart';
 import 'package:loja_virtual/screens/orders/components/order_tile.dart';
@@ -18,20 +19,53 @@ class AdminOrdersScreen extends StatelessWidget {
       ),
       body: Consumer<AdminOrdersManager>(
         builder: (_, ordersManager, __) {
-          if (ordersManager.orders.isEmpty) {
-            return EmptyCard(
-                title: 'Nenhuma Venda Realizada!',
-                iconData: Icons.border_clear);
-          }
+          final filteredOrders = ordersManager.filteredOrders;
 
-          return ListView.builder(
-            itemCount: ordersManager.orders.length,
-            itemBuilder: (context, index) {
-              return OrderTile(
-                order: ordersManager.orders.reversed.toList()[index],
-                showControls: true,
-              );
-            },
+          return Column(
+            children: <Widget>[
+              if (ordersManager.userFilter != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 2),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          'Pedidos de ${ordersManager.userFilter!.name}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      CustomIconButton(
+                        iconData: Icons.close,
+                        color: Colors.white,
+                        onTap: () {
+                          ordersManager.setUserFilter(null);
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              if (filteredOrders.isEmpty)
+                Expanded(
+                  child: EmptyCard(
+                    title: 'Nenhuma venda realizada!',
+                    iconData: Icons.border_clear,
+                  ),
+                )
+              else
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: filteredOrders.length,
+                      itemBuilder: (_, index) {
+                        return OrderTile(
+                          order: filteredOrders[index],
+                          showControls: true,
+                        );
+                      }),
+                )
+            ],
           );
         },
       ),
