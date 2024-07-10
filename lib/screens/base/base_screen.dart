@@ -36,7 +36,7 @@ class _BaseScreenState extends State<BaseScreen> {
             ),
             if (userManager.adminEnabled) ...[
               const AdminUsersScreen(),
-              const AdminOrdersScreen(),
+              AdminOrdersScreen(),
             ]
           ],
         );
