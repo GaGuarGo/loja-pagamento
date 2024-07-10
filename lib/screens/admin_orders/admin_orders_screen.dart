@@ -28,7 +28,9 @@ class AdminOrdersScreen extends StatelessWidget {
             itemCount: ordersManager.orders.length,
             itemBuilder: (context, index) {
               return OrderTile(
-                  order: ordersManager.orders.reversed.toList()[index]);
+                order: ordersManager.orders.reversed.toList()[index],
+                showControls: true,
+              );
             },
           );
         },

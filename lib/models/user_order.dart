@@ -60,6 +60,32 @@ class UserOrder {
     firestore.collection('orders').doc(orderId).set(toMap());
   }
 
+  Function()? get back {
+    if (status!.index >= Status.transporting.index) {
+      return () {
+        status = Status.values[status!.index - 1];
+        firestore
+            .collection('orders')
+            .doc(orderId)
+            .update({'status': status!.index});
+      };
+    }
+    return null;
+  }
+
+  Function()? get advance {
+    if (status!.index <= Status.transporting.index) {
+      return () {
+        status = Status.values[status!.index + 1];
+        firestore
+            .collection('orders')
+            .doc(orderId)
+            .update({'status': status!.index});
+      };
+    }
+    return null;
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'items': items!.map((i) => i.toOrderItemMap()).toList(),
