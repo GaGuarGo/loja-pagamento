@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:loja_virtual/models/admin_orders_manager.dart';
 import 'package:loja_virtual/models/admin_users_manager.dart';
 import 'package:loja_virtual/models/cart_manager.dart';
 import 'package:loja_virtual/models/home_manager.dart';
@@ -69,6 +70,12 @@ class MyApp extends StatelessWidget {
           lazy: false,
           update: (_, userManager, AdminUsersManager? adminUsersManager) =>
               adminUsersManager!..updateUser(userManager),
+        ),
+        ChangeNotifierProxyProvider<UserManager, AdminOrdersManager>(
+          create: (_) => AdminOrdersManager(),
+          lazy: false,
+          update: (_, userManager, AdminOrdersManager? adminOrdersManager) =>
+              adminOrdersManager!..updateAdmin(userManager.adminEnabled),
         )
       ],
       child: MaterialApp(
