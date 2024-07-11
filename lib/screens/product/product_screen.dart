@@ -25,7 +25,7 @@ class ProductScreen extends StatelessWidget {
           centerTitle: true,
           actions: [
             Consumer<UserManager>(builder: (_, userManager, __) {
-              if (userManager.adminEnabled) {
+              if (userManager.adminEnabled && !product.deleted!) {
                 return IconButton(
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed(
@@ -105,25 +105,39 @@ class ProductScreen extends StatelessWidget {
                       fontSize: 16,
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 8, top: 16),
-                    child: Text(
-                      'Opções:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
+                  if (product.deleted!)
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 8, top: 16),
+                      child: Text(
+                        'Produto Indisponível para Compra',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.red
+                        ),
+                      ),
+                    )
+                  else ...[
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 8, top: 16),
+                      child: Text(
+                        'Opções:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
-                  ),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    runAlignment: WrapAlignment.spaceEvenly,
-                    //alignment: WrapAlignment.center,
-                    children: product.sizes!.map((s) {
-                      return SizeWidget(size: s);
-                    }).toList(),
-                  ),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      runAlignment: WrapAlignment.spaceEvenly,
+                      //alignment: WrapAlignment.center,
+                      children: product.sizes!.map((s) {
+                        return SizeWidget(size: s);
+                      }).toList(),
+                    ),
+                  ],
                   const SizedBox(height: 20),
                   if (product.hasStock)
                     Consumer2<UserManager, Product>(

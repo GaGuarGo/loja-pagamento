@@ -13,6 +13,7 @@ class ProductListTile extends StatelessWidget {
         Navigator.of(context).pushNamed('/product', arguments: product);
       },
       child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -51,6 +52,15 @@ class ProductListTile extends StatelessWidget {
                         fontWeight: FontWeight.w800,
                         color: Theme.of(context).primaryColor),
                   ),
+                  if (!product.hasStock)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        'Sem Estoque',
+                        style: TextStyle(
+                            fontSize: 10, color: Colors.red),
+                      ),
+                    ),
                 ],
               ))
             ],
