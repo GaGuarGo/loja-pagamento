@@ -115,7 +115,7 @@ class Product extends ChangeNotifier {
     }
 
     for (final image in images!) {
-      if (!newImages!.contains(image)) {
+      if (!newImages!.contains(image) && image.contains('firebase')) {
         try {
           final ref = _storage.refFromURL(image);
           await ref.delete();
