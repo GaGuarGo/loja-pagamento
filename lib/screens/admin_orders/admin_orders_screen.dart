@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:loja_virtual/common/custom_drawer/custom_drawer.dart';
 import 'package:loja_virtual/common/custom_icon_button.dart';
 import 'package:loja_virtual/common/empty_card.dart';
@@ -9,9 +8,14 @@ import 'package:loja_virtual/screens/orders/components/order_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class AdminOrdersScreen extends StatelessWidget {
+class AdminOrdersScreen extends StatefulWidget {
   AdminOrdersScreen({super.key});
 
+  @override
+  State<AdminOrdersScreen> createState() => _AdminOrdersScreenState();
+}
+
+class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
   final panelController = PanelController();
 
   @override
