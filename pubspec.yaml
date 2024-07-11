@@ -57,6 +57,7 @@ dependencies:
   saver_gallery: ^3.0.5
   permission_handler: ^11.3.1
   device_info_plus: 9.1.2
+  flutter_signin_button: ^2.0.0
 
 
 dev_dependencies:

@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:loja_virtual/helpers/validators.dart';
 import 'package:loja_virtual/models/user.dart';
 import 'package:loja_virtual/models/user_manager.dart';
@@ -83,7 +85,6 @@ class LoginScreen extends StatelessWidget {
                           child: const Text("Esqueci minha Senha"),
                         ),
                       ),
-                      const SizedBox(height: 16),
                       SizedBox(
                         height: 44,
                         child: ElevatedButton(
@@ -123,6 +124,19 @@ class LoginScreen extends StatelessWidget {
                                       AlwaysStoppedAnimation(Colors.white),
                                 )
                               : const Text("Entrar"),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      SizedBox(
+                        height: 44,
+                        child: SignInButton(
+                          
+                          Buttons.Facebook,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          text: 'Entrar com Facebook',
+                          onPressed: () {
+                            userManager.facebookLogin();
+                          },
                         ),
                       ),
                     ],

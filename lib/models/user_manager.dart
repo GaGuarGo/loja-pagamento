@@ -44,6 +44,10 @@ class UserManager extends ChangeNotifier {
     loading = false;
   }
 
+  void facebookLogin() {
+    
+  }
+
   Future<void> signUp(
       {required UserModel user,
       required Function onFail,
