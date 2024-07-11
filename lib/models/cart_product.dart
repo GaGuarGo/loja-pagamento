@@ -22,6 +22,18 @@ class CartProduct extends ChangeNotifier {
     });
   }
 
+  CartProduct.fromMap(Map<String, dynamic> map) {
+    productId = map['pid'] as String;
+    quantity = map['quantity'] as int;
+    size = map['size'] as String;
+    fixedPrice = map['fixedPrice'] as num;
+
+    firestrore.doc('products/$productId').get().then((doc) {
+      product = Product.fromDocument(doc);
+      notifyListeners();
+    });
+  }
+
   final firestrore = FirebaseFirestore.instance;
 
   String? id;
@@ -30,7 +42,13 @@ class CartProduct extends ChangeNotifier {
   int? quantity;
   String? size;
 
+  num? fixedPrice;
+
   Product? product;
+  void setProduct(Product p) {
+    product = p;
+    notifyListeners();
+  }
 
   ItemSize? get itemSize {
     if (product == null) return null;
@@ -52,6 +70,15 @@ class CartProduct extends ChangeNotifier {
       'pid': productId,
       'quantity': quantity,
       'size': size,
+    };
+  }
+
+  Map<String, dynamic> toOrderItemMap() {
+    return {
+      'pid': productId,
+      'quantity': quantity,
+      'size': size,
+      'fixedPrice': fixedPrice ?? unitPrice,
     };
   }
 
