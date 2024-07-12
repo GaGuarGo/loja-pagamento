@@ -28,6 +28,18 @@ class StoreCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
 
+    void showError() {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            'Este dispositivo não possui esta função',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+    }
+
     void openPhone() async {
       final Uri launchUri = Uri(
         scheme: 'tel',
@@ -36,16 +48,7 @@ class StoreCard extends StatelessWidget {
       if (await canLaunchUrl(launchUri)) {
         await launchUrl(launchUri);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(
-              'Este dispositivo não possui esta função',
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-          ),
-        );
+        showError();
       }
     }
 
@@ -84,7 +87,9 @@ class StoreCard extends StatelessWidget {
                 ),
               );
             });
-      } catch (e) {}
+      } catch (e) {
+        showError();
+      }
     }
 
     return Card(
