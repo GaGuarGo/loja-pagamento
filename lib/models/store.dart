@@ -34,6 +34,9 @@ class Store {
   String? name;
   String? image;
   String? phone;
+
+  String get cleanPhone => phone!.replaceAll(RegExp(r"[^\d]"), "");
+
   Address? address;
   Map<String, Map<String, TimeOfDay>?>? opening;
 

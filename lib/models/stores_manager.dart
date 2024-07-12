@@ -21,6 +21,8 @@ class StoresManager extends ChangeNotifier {
 
   List<Store> stores = [];
 
+  Timer? _timer;
+
   Future<void> _loadStoreList() async {
     loading = true;
     final snapshot = await firestore.collection('stores').get();
@@ -30,7 +32,7 @@ class StoresManager extends ChangeNotifier {
   }
 
   void _startTimer() {
-    Timer.periodic(const Duration(minutes: 1), (timer) {
+    _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
       _checkOpening();
       notifyListeners();
     });
@@ -40,5 +42,11 @@ class StoresManager extends ChangeNotifier {
     for (final store in stores) {
       store.updateStatus();
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer?.cancel();
   }
 }
