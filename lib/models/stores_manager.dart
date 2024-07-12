@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/store.dart';
@@ -5,6 +7,7 @@ import 'package:loja_virtual/models/store.dart';
 class StoresManager extends ChangeNotifier {
   StoresManager() {
     _loadStoreList();
+    _startTimer();
   }
 
   bool _loading = false;
@@ -24,5 +27,18 @@ class StoresManager extends ChangeNotifier {
 
     stores = snapshot.docs.map((e) => Store.fromDocument(e)).toList();
     loading = false;
+  }
+
+  void _startTimer() {
+    Timer.periodic(const Duration(minutes: 1), (timer) {
+      _checkOpening();
+      notifyListeners();
+    });
+  }
+
+  void _checkOpening() {
+    for (final store in stores) {
+      store.updateStatus();
+    }
   }
 }
