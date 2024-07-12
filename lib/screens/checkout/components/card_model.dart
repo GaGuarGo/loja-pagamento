@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CardModal extends StatelessWidget {
-  final Widget content;
+  final Widget? content;
   const CardModal({super.key, required this.content});
 
   @override
@@ -11,6 +11,7 @@ class CardModal extends StatelessWidget {
       elevation: 16.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
+        padding: const EdgeInsets.all(24),
         height: 200,
         color: const Color(0xFF1B4B52),
         child: content,

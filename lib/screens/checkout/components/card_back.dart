@@ -6,6 +6,6 @@ class CardBack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CardModal(content: SizedBox());
+    return CardModal(content: null);
   }
 }
