@@ -29,6 +29,11 @@ class CardFront extends StatelessWidget {
                     FilteringTextInputFormatter.digitsOnly,
                     CartaoBancarioInputFormatter(),
                   ],
+                  validator: (value) {
+                    if (value!.length != 19) return 'Inválido';
+
+                    return null;
+                  },
                 ),
                 CardTextField(
                   title: 'Validade',
@@ -38,6 +43,10 @@ class CardFront extends StatelessWidget {
                     FilteringTextInputFormatter.digitsOnly,
                     dateFormatter,
                   ],
+                  validator: (value) {
+                    if (value!.length != 7) return 'Inválido';
+                    return null;
+                  },
                 ),
                 CardTextField(
                   title: 'Titular',
@@ -45,6 +54,10 @@ class CardFront extends StatelessWidget {
                   textInputType: TextInputType.text,
                   bold: true,
                   inputFormatters: [],
+                  validator: (value) {
+                    if (value!.trim().isEmpty) return 'Inválido';
+                    return null;
+                  },
                 ),
               ],
             ),
