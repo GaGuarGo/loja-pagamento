@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CardTextField extends StatelessWidget {
   final String title;
   final bool bold;
   final String hint;
   final TextInputType textInputType;
-  const CardTextField(
-      {super.key,
-      required this.title,
-      this.bold = false,
-      required this.hint,
-      required this.textInputType});
+  final List<TextInputFormatter> inputFormatters;
+  const CardTextField({
+    super.key,
+    required this.title,
+    this.bold = false,
+    required this.hint,
+    required this.textInputType,
+    required this.inputFormatters,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +46,7 @@ class CardTextField extends StatelessWidget {
               contentPadding: const EdgeInsets.symmetric(vertical: 2),
             ),
             keyboardType: textInputType,
+            inputFormatters: inputFormatters,
           ),
         ],
       ),
