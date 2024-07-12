@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loja_virtual/common/custom_icon_button.dart';
 import 'package:loja_virtual/models/store.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StoreCard extends StatelessWidget {
@@ -43,6 +47,44 @@ class StoreCard extends StatelessWidget {
           ),
         );
       }
+    }
+
+    Future<void> openMap() async {
+      try {
+        final availableMaps = await MapLauncher.installedMaps;
+
+        showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return SafeArea(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (final map in availableMaps)
+                      ListTile(
+                        onTap: () {
+                          map.showMarker(
+                              //colocar coordenadas vindas da api do objeto address dentro classe Store
+                              coords: Coords(0, 0),
+                              title: store.name!,
+                              description: store.addressText);
+                          Navigator.of(context);
+                        },
+                        leading: SvgPicture.asset(
+                          map.icon,
+                          height: 30.0,
+                          width: 30.0,
+                        ),
+                        title: Text(
+                          map.mapName,
+                        ),
+                        tileColor: Colors.white,
+                      ),
+                  ],
+                ),
+              );
+            });
+      } catch (e) {}
     }
 
     return Card(
@@ -115,7 +157,7 @@ class StoreCard extends StatelessWidget {
                     CustomIconButton(
                       iconData: Icons.map,
                       color: primaryColor,
-                      onTap: () {},
+                      onTap: openMap,
                     ),
                     CustomIconButton(
                       iconData: Icons.phone,
