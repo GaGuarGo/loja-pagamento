@@ -4,7 +4,9 @@ import 'package:loja_virtual/screens/checkout/components/card_model.dart';
 import 'package:loja_virtual/screens/checkout/components/card_text_field.dart';
 
 class CardBack extends StatelessWidget {
-  const CardBack({super.key});
+  final FocusNode cvvFocus;
+
+  const CardBack({super.key, required this.cvvFocus});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class CardBack extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                   child: CardTextField(
+                    focusNode: cvvFocus,
                     textAlign: TextAlign.end,
                     hint: '123',
                     textInputType: TextInputType.number,
