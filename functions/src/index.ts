@@ -20,6 +20,8 @@ admin.initializeApp(functions.config().firebase);
 //     return { data: "Hello from Cloud Functions" };
 // });
 
+// FUNÇÃO DE LEITURA
+
 export const getUserData = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
     return {
@@ -35,8 +37,18 @@ export const getUserData = functions.https.onCall(async (data, context) => {
   };
 });
 
+// FUNÇÃO DE ESCRITA
+
 export const addMessage = functions.https.onCall(async (data, context) => {
   const snapshot = await admin.firestore().collection("messages").add(data);
 
   return {"success": snapshot.id};
 });
+
+// FUNÇÃO COM TRIGGER
+
+export const onNewOrder = functions.firestore.document("/orders/{orderId}")
+  .onCreate((snapshot, context) => {
+    const orderId = context.params.orderId;
+    console.log(orderId);
+  });
