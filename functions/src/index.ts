@@ -34,3 +34,9 @@ export const getUserData = functions.https.onCall(async (data, context) => {
     "data": snapshot.data(),
   };
 });
+
+export const addMessage = functions.https.onCall(async (data, context) => {
+  const snapshot = await admin.firestore().collection("messages").add(data);
+
+  return {"success": snapshot.id};
+});
