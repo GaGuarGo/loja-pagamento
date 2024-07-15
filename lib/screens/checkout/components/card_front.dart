@@ -1,4 +1,6 @@
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:credit_card_type_detector/credit_card_type_detector.dart';
+import 'package:credit_card_type_detector/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loja_virtual/screens/checkout/components/card_model.dart';
@@ -10,6 +12,12 @@ class CardFront extends StatelessWidget {
 
   final MaskTextInputFormatter dateFormatter = MaskTextInputFormatter(
       mask: '!#/####', filter: {'#': RegExp('[0-9]'), '!': RegExp('[0-1]')});
+
+  final creditCardTypes = [
+    CreditCardType.elo,
+    CreditCardType.mastercard,
+    CreditCardType.visa
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +38,10 @@ class CardFront extends StatelessWidget {
                     CartaoBancarioInputFormatter(),
                   ],
                   validator: (value) {
-                    if (value!.length != 19) return 'Inválido';
-
+                    if (value!.length != 19)
+                      return 'Inválido';
+                    else if (!creditCardTypes.contains(detectCCType(value)))
+                      return "Inválido";
                     return null;
                   },
                 ),

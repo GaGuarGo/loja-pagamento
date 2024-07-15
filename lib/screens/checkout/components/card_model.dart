@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class CardModal extends StatelessWidget {
   final Widget? content;
-  const CardModal({super.key, required this.content});
+  final bool? padding;
+  const CardModal({super.key, required this.content, this.padding = true});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,7 @@ class CardModal extends StatelessWidget {
       elevation: 16.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
-        padding: const EdgeInsets.all(24),
+        padding: padding! ? const EdgeInsets.all(24) : EdgeInsets.zero,
         height: 200,
         color: const Color(0xFF1B4B52),
         child: content,
