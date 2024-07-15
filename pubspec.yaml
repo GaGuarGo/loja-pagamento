@@ -64,6 +64,7 @@ dependencies:
   flip_card: ^0.7.0
   mask_text_input_formatter: ^2.9.0
   credit_card_type_detector: ^3.0.0
+  cloud_functions: ^4.7.6
 
 
 dev_dependencies:
