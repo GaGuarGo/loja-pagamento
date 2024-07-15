@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:loja_virtual/common/price_card.dart';
 import 'package:loja_virtual/models/cart_manager.dart';
 import 'package:loja_virtual/models/checkout_manager.dart';
+import 'package:loja_virtual/screens/checkout/components/credit_card_widget.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutScreen extends StatelessWidget {
-  const CheckoutScreen({super.key});
+  CheckoutScreen({super.key});
+
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,32 +45,38 @@ class CheckoutScreen extends StatelessWidget {
                 ),
               );
 
-            return ListView(
-              children: [
-                PriceCard(
-                  buttonText: 'Finalizar Pedido',
-                  onPressed: () {
-                    checkoutManager.checkout(onStockFail: (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: Colors.red,
-                          content: Text(
-                            e.toString(),
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      );
-                      Navigator.of(context)
-                          .popUntil((route) => route.settings.name == '/cart');
-                    }, onSuccess: (order) {
-                      Navigator.of(context)
-                          .popUntil((route) => route.settings.name == '/');
-                      Navigator.of(context)
-                          .pushNamed('/confirmation', arguments: order);
-                    });
-                  },
-                ),
-              ],
+            return Form(
+              key: formKey,
+              child: ListView(
+                children: [
+                  CreditCardWidget(),
+                  PriceCard(
+                    buttonText: 'Finalizar Pedido',
+                    onPressed: () {
+                      if (formKey.currentState?.validate() ?? false) {}
+
+                      // checkoutManager.checkout(onStockFail: (e) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     SnackBar(
+                      //       backgroundColor: Colors.red,
+                      //       content: Text(
+                      //         e.toString(),
+                      //         style: TextStyle(color: Colors.white),
+                      //       ),
+                      //     ),
+                      //   );
+                      //   Navigator.of(context).popUntil(
+                      //       (route) => route.settings.name == '/cart');
+                      // }, onSuccess: (order) {
+                      //   Navigator.of(context)
+                      //       .popUntil((route) => route.settings.name == '/');
+                      //   Navigator.of(context)
+                      //       .pushNamed('/confirmation', arguments: order);
+                      // });
+                    },
+                  ),
+                ],
+              ),
             );
           },
         ),
