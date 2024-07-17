@@ -1,4 +1,3 @@
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/admin_orders_manager.dart';
@@ -32,8 +31,8 @@ void main() async {
   );
   runApp(const MyApp());
 
-  final response = await FirebaseFunctions.instance.httpsCallable('getUserData').call();
-  print(response.data);
+  // final response = await FirebaseFunctions.instance.httpsCallable('getUserData').call();
+  // print(response.data);
 }
 
 class MyApp extends StatelessWidget {

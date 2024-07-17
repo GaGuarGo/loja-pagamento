@@ -15,6 +15,16 @@ class CreditCard {
     brand = detectCCType(number.replaceAll(' ', '')).single.toString();
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "cardNumber": number!.replaceAll(' ', ''),
+      "holder": holder,
+      "expirationDate": experationDate,
+      "securityCode": securityCode,
+      "brand": brand,
+    };
+  }
+
   @override
   String toString() {
     return 'CreditCard{number=$number, holder=$holder, experationDate=$experationDate, securityCode=$securityCode, brand=$brand}';

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/cart_manager.dart';
 import 'package:loja_virtual/models/product.dart';
+import 'package:loja_virtual/services/cielo_payment.dart';
 
 class CheckoutManager extends ChangeNotifier {
   CartManager? cartManager;
@@ -21,31 +22,40 @@ class CheckoutManager extends ChangeNotifier {
   }
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final CieloPayment cieloPayment = CieloPayment();
 
   Future<void> checkout(
-      {required Function onStockFail, required Function onSuccess, required CreditCard creditCard}) async {
+      {required Function onStockFail,
+      required Function onSuccess,
+      required CreditCard creditCard}) async {
     loading = true;
-
-    try {
-      await _decrementStock();
-    } catch (e, s) {
-      onStockFail(e);
-      log("Erro ao Finalizar Pedido", error: e, stackTrace: s);
-      loading = false;
-      return;
-    }
-
-    //TODO: PROCESSAR PAGAMENTO
-
     final orderId = await _getOrderId();
 
-    final order = UserOrder.fromCartManager(cartManager!);
-    order.orderId = orderId.toString();
+    cieloPayment.authorize(
+      creditCard: creditCard,
+      price: cartManager!.totalPrice,
+      orderId: orderId.toString(),
+      user: cartManager!.user!,
+    );
 
-    order.save();
+    // try {
+    //   await _decrementStock();
+    // } catch (e, s) {
+    //   onStockFail(e);
+    //   log("Erro ao Finalizar Pedido", error: e, stackTrace: s);
+    //   loading = false;
+    //   return;
+    // }
 
-    cartManager!.clear();
-    onSuccess(order);
+    // //TODO: PROCESSAR PAGAMENTO
+
+    // final order = UserOrder.fromCartManager(cartManager!);
+    // order.orderId = orderId.toString();
+
+    // order.save();
+
+    // cartManager!.clear();
+    // onSuccess(order);
     loading = false;
   }
 
