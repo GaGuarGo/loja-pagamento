@@ -60,6 +60,7 @@ class CheckoutManager extends ChangeNotifier {
     try {
       await cieloPayment.capture(payId);
     } catch (e) {
+      cieloPayment.cancel(payId);
       onPayFail(e);
       loading = false;
       return;
