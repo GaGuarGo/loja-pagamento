@@ -12,7 +12,7 @@ class CreditCard {
   void setCVV(String cvv) => securityCode = cvv;
   void setNumber(String number) {
     this.number = number;
-    brand = detectCCType(number.replaceAll(' ', '')).single.toString();
+    brand = detectCCType(number.replaceAll(' ', '')).single.type.toUpperCase().toString();
   }
 
   Map<String, dynamic> toJson() {
