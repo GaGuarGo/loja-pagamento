@@ -123,7 +123,7 @@ export const authorizeCreditCard = functions.https
         currency: "BRL",
         country: "BRA",
         amount: data.amount,
-        installments: data.installment,
+        installments: data.installments,
         softDescriptor: data.softDescriptor,
         type: data.paymentType,
         capture: false,
@@ -180,6 +180,7 @@ export const authorizeCreditCard = functions.https
         };
       }
     } catch (error) {
+      console.log("ERROR", error);
       return {
         "success": false,
         "error": {

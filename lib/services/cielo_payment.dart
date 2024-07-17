@@ -13,7 +13,7 @@ class CieloPayment {
     final dataSale = <String, dynamic>{
       "merchantOrderId": orderId,
       "amount": (price * 100).toInt(),
-      "softDescriptor": 'Loja do Gabriel',
+      "softDescriptor": 'Loja Gabriel',
       "installments": 1,
       "creditCard": creditCard.toJson(),
       "cpf": user.cpf,
