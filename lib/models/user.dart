@@ -8,14 +8,17 @@ class UserModel {
     id = document.id;
     name = document['name'] as String;
     email = document['email'] as String;
-    if((document.data() as Map<String,dynamic>).containsKey('address')){
-      address = Address.fromMap(document.get('address') as Map<String,dynamic>);
+    cpf = (document['cpf'] ?? "") as String;
+    if ((document.data() as Map<String, dynamic>).containsKey('address')) {
+      address =
+          Address.fromMap(document.get('address') as Map<String, dynamic>);
     }
   }
 
   String? id;
   String? name;
   String? email;
+  String? cpf;
   String? password;
 
   String? confirmPassword;
@@ -37,13 +40,18 @@ class UserModel {
     return {
       "name": name,
       "email": email,
-      if(address != null)
-      'address': address?.toMap(),
+      if (address != null) 'address': address?.toMap(),
+      if (cpf != null) 'cpf': cpf,
     };
   }
 
   void setAddress(Address address) {
     this.address = address;
+    saveData();
+  }
+
+  void setCpf(String cpf) {
+    this.cpf = cpf;
     saveData();
   }
 }
