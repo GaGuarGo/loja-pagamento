@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:loja_virtual/models/credit_card.dart';
 import 'package:loja_virtual/models/user_order.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class CheckoutManager extends ChangeNotifier {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> checkout(
-      {required Function onStockFail, required Function onSuccess}) async {
+      {required Function onStockFail, required Function onSuccess, required CreditCard creditCard}) async {
     loading = true;
 
     try {
