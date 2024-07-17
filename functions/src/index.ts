@@ -17,6 +17,7 @@ import {
   TransactionCreditCardRequestModel,
   EnumBrands,
   CaptureRequestModel,
+  CancelTransactionRequestModel,
 } from "cielo";
 
 admin.initializeApp(functions.config().firebase);
@@ -240,3 +241,56 @@ export const captureCreditCard =
       };
     }
   });
+
+export const cancelCreditCard =
+  functions.https.onCall(async (data, context) => {
+    if (data === null) {
+      return {
+        "success": false,
+        "error": {
+          "code": -1,
+          "message": "Dados não informados",
+        },
+      };
+    }
+
+    if (!context.auth) {
+      return {
+        "success": false,
+        "error": {
+          "code": -1,
+          "message": "Nenhum usuário logado",
+        },
+      };
+    }
+
+    const cancelParams: CancelTransactionRequestModel = {
+      paymentId: data.payId,
+    };
+
+    try {
+      const cancel = await cielo.creditCard.cancelTransaction(cancelParams);
+
+      if (cancel.status === 10 || cancel.status === 11) {
+        return {"success": true};
+      } else {
+        return {
+          "success": false,
+          "status": cancel.status,
+          "error": {
+            "code": cancel.returnCode,
+            "message": cancel.returnMessage,
+          },
+        };
+      }
+    } catch (error) {
+      console.log("Error ", error);
+      return {
+        "success": false,
+        "error": {
+          "code": error,
+        },
+      };
+    }
+  });
+

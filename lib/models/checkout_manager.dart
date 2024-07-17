@@ -59,7 +59,6 @@ class CheckoutManager extends ChangeNotifier {
 
     try {
       await cieloPayment.capture(payId);
-      debugPrint("Pagamento Processado com Sucesso!");
     } catch (e) {
       onPayFail(e);
       loading = false;
