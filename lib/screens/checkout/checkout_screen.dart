@@ -63,6 +63,17 @@ class CheckoutScreen extends StatelessWidget {
 
                         checkoutManager.checkout(
                             creditCard: creditCard,
+                            onPayFail: (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text(
+                                    e.toString(),
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              );
+                            },
                             onStockFail: (e) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
