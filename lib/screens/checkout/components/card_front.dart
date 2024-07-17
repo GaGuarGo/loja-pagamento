@@ -3,11 +3,13 @@ import 'package:credit_card_type_detector/credit_card_type_detector.dart';
 import 'package:credit_card_type_detector/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loja_virtual/models/credit_card.dart';
 import 'package:loja_virtual/screens/checkout/components/card_model.dart';
 import 'package:loja_virtual/screens/checkout/components/card_text_field.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class CardFront extends StatelessWidget {
+  final CreditCard creditCard;
   final FocusNode numberFocus;
   final FocusNode dateFocus;
   final FocusNode nameFocus;
@@ -15,6 +17,7 @@ class CardFront extends StatelessWidget {
 
   CardFront({
     super.key,
+    required this.creditCard,
     required this.numberFocus,
     required this.dateFocus,
     required this.nameFocus,
@@ -23,12 +26,6 @@ class CardFront extends StatelessWidget {
 
   final MaskTextInputFormatter dateFormatter = MaskTextInputFormatter(
       mask: '!#/####', filter: {'#': RegExp('[0-9]'), '!': RegExp('[0-1]')});
-
-  final creditCardTypes = [
-    CreditCardType.elo,
-    CreditCardType.mastercard,
-    CreditCardType.visa
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +37,7 @@ class CardFront extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 CardTextField(
+                  initialValue: creditCard.number,
                   focusNode: numberFocus,
                   title: 'Número',
                   hint: '0000 0000 0000 0000',
@@ -50,17 +48,29 @@ class CardFront extends StatelessWidget {
                     CartaoBancarioInputFormatter(),
                   ],
                   validator: (value) {
-                    if (value!.length != 19)
-                      return 'Inválido';
-                    else if (!creditCardTypes.contains(detectCCType(value)))
-                      return "Inválido";
-                    return null;
+                    if (value!.length != 19) return 'Inválido';
+
+                    final creditCardType = detectCCType(value);
+
+                    const creditCardTypes = [
+                      CreditCardType.visa,
+                      CreditCardType.mastercard,
+                      CreditCardType.elo,
+                    ];
+
+                    if (creditCardTypes.any(
+                        (ct) => ct.call().type == creditCardType.single.type)) {
+                      return null;
+                    }
+                    return 'Tipo de cartão não aceito';
                   },
                   onSubmitted: (_) {
                     dateFocus.requestFocus();
                   },
+                  onSaved: (number) => creditCard.setNumber(number!),
                 ),
                 CardTextField(
+                  initialValue: creditCard.experationDate,
                   focusNode: dateFocus,
                   title: 'Validade',
                   hint: '12/24',
@@ -76,8 +86,10 @@ class CardFront extends StatelessWidget {
                   onSubmitted: (_) {
                     nameFocus.requestFocus();
                   },
+                  onSaved: (date) => creditCard.setExpirationDate(date!),
                 ),
                 CardTextField(
+                  initialValue: creditCard.holder,
                   focusNode: nameFocus,
                   title: 'Titular',
                   hint: 'João M da Silva',
@@ -91,6 +103,7 @@ class CardFront extends StatelessWidget {
                   onSubmitted: (_) {
                     finished();
                   },
+                  onSaved: (holder) => creditCard.setHolder(holder!),
                 ),
               ],
             ),
