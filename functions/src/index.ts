@@ -53,7 +53,7 @@ export const authorizeCreditCard = functions.https.onCall(async (data, context) 
   const userId = context.auth.uid;
 
   const snapshot = await admin.firestore().collection("users").doc(userId).get();
-  const userData = snapshot.data;
+  const userData = snapshot.data() || {};
 
   console.log("Iniciando Autorização");
 
@@ -92,44 +92,43 @@ export const authorizeCreditCard = functions.https.onCall(async (data, context) 
         }
       }
   }
-});
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
-
-// export const helloWorld = functions.https.onCall((data, context) => {
-//     return { data: "Hello from Cloud Functions" };
-// });
-
-// FUNÇÃO DE LEITURA
-
-export const getUserData = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    return {
-      "data": "Nenhum Usuário Logado",
-    };
-  }
-
-
-  const snapshot = await admin.firestore()
-    .collection("users").doc(context.auth.uid).get();
-  return {
-    "data": snapshot.data(),
+  const saleData: TransactionCreditCardRequestModel = {
+    merchantOrderId: data.merchantOrderId,
+    customer: {
+      name: userData.name,
+      identity: data.cpf,
+      identityType: 'CPF',
+      email: userData.email,
+      deliveryAddress: {
+        street: userData.address.street,
+        number: userData.address.number,
+        complement: userData.address.complement,
+        zipCode: userData.address.zipCode.replace('.', '').replace('-', ''),
+        city: userData.address.city,
+        state: userData.address.state,
+        country: 'BRA',
+        district: userData.address.district,
+      }
+    },
+    payment: {
+      currency: 'BRL',
+      country: 'BRA',
+      amount: data.amount,
+      installments: data.installment,
+      softDescriptor: data.softDescriptor,
+      type: data.paymentType,
+      capture: false,
+      creditCard: {
+        cardNumber: data.creditCard.cardNumber,
+        holder: data.creditCard.holder,
+        expirationDate: data.creditCard.expirationDate,
+        securityCode: data.creditCard.securityCode,
+        brand: brand
+      }
+    }
   };
+
+  const transaction = await cielo.creditCard.transaction(saleData);
+
 });
-
-// FUNÇÃO DE ESCRITA
-
-export const addMessage = functions.https.onCall(async (data, context) => {
-  const snapshot = await admin.firestore().collection("messages").add(data);
-
-  return { "success": snapshot.id };
-});
-
-// FUNÇÃO COM TRIGGER
-
-export const onNewOrder = functions.firestore.document("/orders/{orderId}")
-  .onCreate((snapshot, context) => {
-    const orderId = context.params.orderId;
-    console.log(orderId);
-  });
