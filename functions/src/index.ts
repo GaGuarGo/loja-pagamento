@@ -11,7 +11,21 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
+import { CieloConstructor, Cielo, TransactionCreditCardRequestModel, CaptureRequestModel, CancelTransactionRequestModel, EnumBrands } from "cielo";
+
 admin.initializeApp(functions.config().firebase);
+
+const merchantid = functions.config().cielo.merchantid;
+const merchantkey = functions.config().cielo.merchantkey;
+
+const cieloParams: CieloConstructor = {
+  merchantId: merchantid,
+  merchantKey: merchantkey,
+  sandbox: true,
+  debug: true,
+};
+
+const cielo = new Cielo(cieloParams);
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
@@ -42,7 +56,7 @@ export const getUserData = functions.https.onCall(async (data, context) => {
 export const addMessage = functions.https.onCall(async (data, context) => {
   const snapshot = await admin.firestore().collection("messages").add(data);
 
-  return {"success": snapshot.id};
+  return { "success": snapshot.id };
 });
 
 // FUNÇÃO COM TRIGGER
