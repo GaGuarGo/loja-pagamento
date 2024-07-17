@@ -25,9 +25,11 @@ class UserOrder {
     address = Address.fromMap(doc.get('address') as Map<String, dynamic>);
     date = doc.get('date') as Timestamp;
     status = Status.values[doc.get('status')];
+    payId = doc.get('payId');
   }
 
   String? orderId;
+  String? payId;
   List<CartProduct>? items;
   num? price;
   String? userId;
@@ -100,6 +102,7 @@ class UserOrder {
       'address': address!.toMap(),
       'status': status!.index,
       'date': Timestamp.now(),
+      'payId': payId,
     };
   }
 

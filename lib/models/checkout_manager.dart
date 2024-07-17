@@ -31,10 +31,11 @@ class CheckoutManager extends ChangeNotifier {
       required CreditCard creditCard}) async {
     loading = true;
     final orderId = await _getOrderId();
+    String payId = "";
 
     //AUTORIZANDO A TRANSAÇÃO
     try {
-      final payId = await cieloPayment.authorize(
+      payId = await cieloPayment.authorize(
         creditCard: creditCard,
         price: cartManager!.totalPrice,
         orderId: orderId.toString(),
@@ -56,10 +57,18 @@ class CheckoutManager extends ChangeNotifier {
       return;
     }
 
-    //TODO: PROCESSAR PAGAMENTO
+    try {
+      await cieloPayment.capture(payId);
+      debugPrint("Pagamento Processado com Sucesso!");
+    } catch (e) {
+      onPayFail(e);
+      loading = false;
+      return;
+    }
 
     final order = UserOrder.fromCartManager(cartManager!);
     order.orderId = orderId.toString();
+    order.payId = payId;
 
     order.save();
 
