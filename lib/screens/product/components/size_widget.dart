@@ -11,8 +11,6 @@ class SizeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = context.watch<Product>();
 
-    //TODO: Problema no Select
-
     final selected = size == product.selectedSize;
 
     Color color;
