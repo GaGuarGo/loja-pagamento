@@ -31,14 +31,12 @@ class CheckoutManager extends ChangeNotifier {
     loading = true;
     final orderId = await _getOrderId();
 
-    print(creditCard.toJson());
-
-    // cieloPayment.authorize(
-    //   creditCard: creditCard,
-    //   price: cartManager!.totalPrice,
-    //   orderId: orderId.toString(),
-    //   user: cartManager!.user!,
-    // );
+    cieloPayment.authorize(
+      creditCard: creditCard,
+      price: cartManager!.totalPrice,
+      orderId: orderId.toString(),
+      user: cartManager!.user!,
+    );
 
     // try {
     //   await _decrementStock();
