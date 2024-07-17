@@ -15,9 +15,8 @@ import {
   CieloConstructor,
   Cielo,
   TransactionCreditCardRequestModel,
-  // CaptureRequestModel,
-  // CancelTransactionRequestModel,
   EnumBrands,
+  CaptureRequestModel,
 } from "cielo";
 
 admin.initializeApp(functions.config().firebase);
@@ -176,6 +175,58 @@ export const authorizeCreditCard = functions.https
           "error": {
             "code": transaction.payment.returnCode,
             "message": message,
+          },
+        };
+      }
+    } catch (error) {
+      console.log("ERROR", error);
+      return {
+        "success": false,
+        "error": {
+          "message": error,
+        },
+      };
+    }
+  });
+
+export const captureCreditCard =
+  functions.https.onCall(async (data, context) => {
+    if (data === null) {
+      return {
+        "success": false,
+        "error": {
+          "code": -1,
+          "message": "Dados não Informados",
+        },
+      };
+    }
+
+    if (!context.auth) {
+      return {
+        "success": false,
+        "error": {
+          "code": -1,
+          "message": "Nenhum Usuário Logado",
+        },
+      };
+    }
+
+    const captureParams: CaptureRequestModel = {paymentId: data.payId};
+
+    try {
+      const capture =
+        await cielo.creditCard.captureSaleTransaction(captureParams);
+      if (capture.status === 2) {
+        return {
+          "success": true,
+        };
+      } else {
+        return {
+          "success": false,
+          "status": capture.status,
+          "error": {
+            "code": capture.returnCode,
+            "message": capture.returnMessage,
           },
         };
       }

@@ -39,4 +39,12 @@ class CieloPayment {
       return Future.error('Falha ao Processar Transação. Tente Novamente');
     }
   }
+
+  Future<void> capture(String payId) async {
+    final captureData = <String, dynamic>{'payId': payId};
+
+    final callable = functions.httpsCallable('captureCreditCard');
+    final response = await callable.call(captureData);
+    print(response.data);
+  }
 }

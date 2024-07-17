@@ -47,24 +47,24 @@ class CheckoutManager extends ChangeNotifier {
       return;
     }
 
-    // try {
-    //   await _decrementStock();
-    // } catch (e, s) {
-    //   onStockFail(e);
-    //   log("Erro ao Finalizar Pedido", error: e, stackTrace: s);
-    //   loading = false;
-    //   return;
-    // }
+    try {
+      await _decrementStock();
+    } catch (e, s) {
+      onStockFail(e);
+      log("Erro ao Finalizar Pedido", error: e, stackTrace: s);
+      loading = false;
+      return;
+    }
 
-    // //TODO: PROCESSAR PAGAMENTO
+    //TODO: PROCESSAR PAGAMENTO
 
-    // final order = UserOrder.fromCartManager(cartManager!);
-    // order.orderId = orderId.toString();
+    final order = UserOrder.fromCartManager(cartManager!);
+    order.orderId = orderId.toString();
 
-    // order.save();
+    order.save();
 
-    // cartManager!.clear();
-    // onSuccess(order);
+    cartManager!.clear();
+    onSuccess(order);
     loading = false;
   }
 
