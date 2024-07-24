@@ -115,7 +115,7 @@ class ItemTile extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4),
                 child: Text(
-                  product!.name!,
+                  product?.name ?? "Carregando Produto...",
                   style: const TextStyle(
                       fontSize: 14, fontWeight: FontWeight.w400),
                 ),
@@ -123,7 +123,7 @@ class ItemTile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
                 child: Text(
-                  "A partir de: R\$ ${product.basePrice.toStringAsFixed(2)}",
+                 product?.name != null ? "A partir de: R\$ ${product?.basePrice.toStringAsFixed(2)}" : "",
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 14,

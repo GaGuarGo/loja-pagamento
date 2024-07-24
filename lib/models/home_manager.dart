@@ -16,6 +16,10 @@ class HomeManager extends ChangeNotifier {
   final _firestore = FirebaseFirestore.instance;
 
   Future<void> _loadSections() async {
+    
+    loading = true;
+    notifyListeners();
+
     _firestore.collection('home').orderBy('pos').snapshots().listen((snapshot) {
       _sections.clear();
       for (final DocumentSnapshot document in snapshot.docs) {
@@ -23,6 +27,9 @@ class HomeManager extends ChangeNotifier {
       }
       notifyListeners();
     });
+
+     loading = false;
+    notifyListeners();
   }
 
   void addSection(Section section) {

@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loja_virtual/helpers/loading_widget.dart';
 import 'package:loja_virtual/models/page_manager.dart';
 import 'package:loja_virtual/models/user_manager.dart';
 import 'package:loja_virtual/screens/admin_orders/admin_orders_screen.dart';
@@ -40,8 +41,8 @@ class _BaseScreenState extends State<BaseScreen> {
     fcm.requestPermission(provisional: true);
 
     FirebaseMessaging.onMessage.listen((notification) {
-      showNotification(
-          notification.notification!.title!, notification.notification?.body ?? "");
+      showNotification(notification.notification!.title!,
+          notification.notification?.body ?? "");
     });
     FirebaseMessaging.onMessageOpenedApp.listen((event) {});
     FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
@@ -73,16 +74,18 @@ class _BaseScreenState extends State<BaseScreen> {
         return PageView(
           physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
-          children: [
-            const HomeScreen(),
-            const ProductsScreen(),
-            OrdersScreen(),
-            StoresScreen(),
-            if (userManager.adminEnabled) ...[
-              const AdminUsersScreen(),
-              AdminOrdersScreen(),
-            ]
-          ],
+          children: userManager.loading
+              ? [const LoadingWidget()]
+              : [
+                  const HomeScreen(),
+                  const ProductsScreen(),
+                  OrdersScreen(),
+                  StoresScreen(),
+                  if (userManager.adminEnabled) ...[
+                    const AdminUsersScreen(),
+                    AdminOrdersScreen(),
+                  ]
+                ],
         );
       }),
     );
