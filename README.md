@@ -22,8 +22,12 @@ Controle do Gerente da Loja Integrado
 
 Tela Inicial Facilmente Customizável
 
-Notificações por Push
+Notificações por Push tanto para o cliente quanto para o administrador
 
 Processo de Adição/Remoção de Produtos Simplificado
 
 Especificação dos Horários de Funcionamento, Contato e Endereço da Loja
+
+Cloud Functions
+
+Segurança do Banco de Dados através da escrita de regras no Cloud Firestore
