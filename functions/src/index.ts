@@ -308,7 +308,11 @@ export const onNewOrder = functions.firestore.document("/orders/{orderId}")
       adminsTokens = adminsTokens.concat(tokensAdmin);
     }
 
-    console.log(orderId, adminsTokens);
+    await sendPushFCM(
+      adminsTokens,
+      "Novo Pedido",
+      "Nova Venda Realizada. Pedido: " + orderId,
+    );
   });
 
 
@@ -318,5 +322,19 @@ async function getDeviceTokens(uid: string): Promise<string[]> {
 
   const tokens = querySnapshot.docs.map((doc) => doc.id);
   return tokens;
+}
+
+async function sendPushFCM(tokens: string[], title: string, message: string) {
+  if (tokens.length > 0) {
+    const payLoad = {
+      notification: {
+        title: title,
+        body: message,
+        click_action: "FLUTTER_NOTIFICATION_CLICK",
+      },
+    };
+    return admin.messaging().sendToDevice(tokens, payLoad);
+  }
+  return;
 }
 
