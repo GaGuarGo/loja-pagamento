@@ -67,38 +67,38 @@ export const authorizeCreditCard = functions.https
 
     let brand: EnumBrands;
     switch (data.creditCard.brand) {
-      case "VISA":
-        brand = EnumBrands.VISA;
-        break;
-      case "MASTERCARD":
-        brand = EnumBrands.MASTER;
-        break;
-      case "AMEX":
-        brand = EnumBrands.AMEX;
-        break;
-      case "ELO":
-        brand = EnumBrands.ELO;
-        break;
-      case "JCB":
-        brand = EnumBrands.JCB;
-        break;
-      case "DINERSCLUB":
-        brand = EnumBrands.DINERS;
-        break;
-      case "DISCOVER":
-        brand = EnumBrands.DISCOVERY;
-        break;
-      case "HIPERCARD":
-        brand = EnumBrands.HIPERCARD;
-        break;
-      default:
-        return {
-          "success": false,
-          "error": {
-            "code": -1,
-            "message": "Cartão Não Suportado: " + data.creditCard.brand,
-          },
-        };
+    case "VISA":
+      brand = EnumBrands.VISA;
+      break;
+    case "MASTERCARD":
+      brand = EnumBrands.MASTER;
+      break;
+    case "AMEX":
+      brand = EnumBrands.AMEX;
+      break;
+    case "ELO":
+      brand = EnumBrands.ELO;
+      break;
+    case "JCB":
+      brand = EnumBrands.JCB;
+      break;
+    case "DINERSCLUB":
+      brand = EnumBrands.DINERS;
+      break;
+    case "DISCOVER":
+      brand = EnumBrands.DISCOVERY;
+      break;
+    case "HIPERCARD":
+      brand = EnumBrands.HIPERCARD;
+      break;
+    default:
+      return {
+        "success": false,
+        "error": {
+          "code": -1,
+          "message": "Cartão Não Suportado: " + data.creditCard.brand,
+        },
+      };
     }
 
     const saleData: TransactionCreditCardRequestModel = {
@@ -148,27 +148,27 @@ export const authorizeCreditCard = functions.https
       } else {
         let message = "";
         switch (transaction.payment.returnCode) {
-          case "5":
-            message = "Não Autorizada";
-            break;
-          case "57":
-            message = "Cartão expirado";
-            break;
-          case "78":
-            message = "Cartão bloqueado";
-            break;
-          case "99":
-            message = "Timeout";
-            break;
-          case "77":
-            message = "Cartão cancelado";
-            break;
-          case "70":
-            message = "Problemas com o Cartão de Crédito";
-            break;
-          default:
-            message = transaction.payment.returnMessage;
-            break;
+        case "5":
+          message = "Não Autorizada";
+          break;
+        case "57":
+          message = "Cartão expirado";
+          break;
+        case "78":
+          message = "Cartão bloqueado";
+          break;
+        case "99":
+          message = "Timeout";
+          break;
+        case "77":
+          message = "Cartão cancelado";
+          break;
+        case "70":
+          message = "Problemas com o Cartão de Crédito";
+          break;
+        default:
+          message = transaction.payment.returnMessage;
+          break;
         }
         return {
           "success": false,
@@ -212,7 +212,7 @@ export const captureCreditCard =
       };
     }
 
-    const captureParams: CaptureRequestModel = { paymentId: data.payId };
+    const captureParams: CaptureRequestModel = {paymentId: data.payId};
 
     try {
       const capture =
@@ -272,7 +272,7 @@ export const cancelCreditCard =
       const cancel = await cielo.creditCard.cancelTransaction(cancelParams);
 
       if (cancel.status === 10 || cancel.status === 11) {
-        return { "success": true };
+        return {"success": true};
       } else {
         return {
           "success": false,
