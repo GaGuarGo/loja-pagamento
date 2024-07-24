@@ -66,6 +66,7 @@ dependencies:
   credit_card_type_detector: ^3.0.0
   cloud_functions: ^4.7.6
   firebase_messaging: ^14.9.4
+  another_flushbar: ^1.12.30
 
 
 dev_dependencies:
